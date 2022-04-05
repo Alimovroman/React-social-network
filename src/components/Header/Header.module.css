@@ -1,0 +1,7 @@
+.header {
+  background-color: darkcyan;
+  flex-basis: 100%;
+}
+.header img {
+  width: 100px;
+}

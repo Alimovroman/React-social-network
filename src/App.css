@@ -3,18 +3,3 @@
   flex-wrap: wrap;
   justify-content: space-around;
 }
-.header {
-  background-color: aquamarine;
-  flex-basis: 100%;
-}
-.header img {
-  width: 100px;
-}
-.nav {
-  background-color: bisque;
-  flex-basis: 20%;
-}
-.main {
-  background-color: darkolivegreen;
-  flex-basis: 80%;
-}

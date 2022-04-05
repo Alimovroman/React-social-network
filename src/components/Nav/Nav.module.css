@@ -1,0 +1,8 @@
+.nav {
+  background-color: bisque;
+  flex-basis: 20%;
+}
+.item {
+  border: 1px dashed grey;
+  color: white;
+}

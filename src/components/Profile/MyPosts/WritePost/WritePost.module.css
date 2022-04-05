@@ -1,0 +1,4 @@
+.writePosts {
+  display: flex;
+  flex-direction: column;
+}
