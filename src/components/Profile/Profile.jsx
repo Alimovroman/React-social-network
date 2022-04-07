@@ -3,7 +3,7 @@ import classes from './Profile.module.css';
 
 const Profile = () => {
   return (
-    <main className={classes.main}>
+    <main>
         <div>
           <img src='https://www.gazetemistanbul.com/images/haberler/2015/09/quiksilver_iflas_bayragini_cekti_h12541_5805c.jpg' alt='banner'></img>
         </div>

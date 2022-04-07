@@ -3,3 +3,7 @@
   flex-wrap: wrap;
   justify-content: space-around;
 }
+.app-wrapper-content {
+  background-color: darkolivegreen;
+  flex-basis: 80%;
+}

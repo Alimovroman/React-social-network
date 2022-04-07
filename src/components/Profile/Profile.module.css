@@ -1,7 +1,3 @@
-.main {
-  background-color: darkolivegreen;
-  flex-basis: 80%;
-}
 .userProfile {
   display: flex;
   width: 60%;
