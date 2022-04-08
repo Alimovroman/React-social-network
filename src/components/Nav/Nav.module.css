@@ -2,7 +2,12 @@
   background-color: bisque;
   flex-basis: 20%;
 }
-.item {
-  border: 1px dashed grey;
-  color: white;
+a:link {
+  color: rgb(233, 125, 225);
+}
+a {
+  color: rgb(154, 158, 118);
+}
+.active {
+  color: rgb(182, 58, 14);
 }
