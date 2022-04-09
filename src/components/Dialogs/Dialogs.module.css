@@ -1,0 +1,7 @@
+.dialogWindow {
+  display: flex;
+  justify-content: space-around;
+}
+.dialog a{
+  color: rgb(159, 119, 155);
+}
