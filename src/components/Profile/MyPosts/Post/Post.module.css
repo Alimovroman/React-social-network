@@ -1,0 +1,13 @@
+.post {
+  padding-top: 20px;
+}
+.postUser {
+  display: flex;
+}
+.avatar {
+  width: 50px;
+}
+.message {
+  padding-top: 5px;
+  padding-left: 15px;
+}

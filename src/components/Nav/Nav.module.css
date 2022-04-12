@@ -14,3 +14,13 @@
 a {
   text-decoration: none;
 }
+.avatar {
+  width: 50px;
+}
+.friendElement {
+  display: flex;
+  justify-content: space-around;
+}
+.friendItem {
+  
+}
