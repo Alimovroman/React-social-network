@@ -8,7 +8,7 @@ const MyPosts = (props) => {
   return (
     <div className={classes.postBlock}>
       <h2>my post</h2>
-      <WritePost />
+      <WritePost addPost={props.addPost}/>
       <div className={classes.posts}>
         {postElement}
       </div>
