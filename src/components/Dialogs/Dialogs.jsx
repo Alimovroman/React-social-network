@@ -1,8 +1,8 @@
-import { NavLink } from 'react-router-dom';
 import classes from './Dialogs.module.css';
 import DialogsUser from './DialogsUser/DialogsUser';
 import Messages from './Messages/Messages';
 import React from 'react';
+import { addMessageActionCreator, onMessageChangeActionCreator } from '../../state/message-reducer';
 
 const Dialogs = (props) => {
   let dialogItem = props.messagesPage.dialogsData.map(dialog => <DialogsUser name={dialog.name} id={dialog.id} />);
@@ -12,12 +12,15 @@ const Dialogs = (props) => {
 
   const addMessage = () => {
     let text = newMassageElement.current.value;
-    props.addMessage(text);
+    //let action = {type: 'ADD-MESSAGE', newText: text};
+    props.dispatch(addMessageActionCreator(text));
   };
 
   let onMessageChange = () => {
-    props.changeMessageText(newMassageElement.current.value)
-  }
+    let text = newMassageElement.current.value;
+    //let action = {type: 'CHANGE-MESSAGE-TEXT', text: newMassageElement.current.value};
+    props.dispatch(onMessageChangeActionCreator(text));
+  };
 
   return (
     <div className={classes.dialogWindow}>

@@ -1,18 +1,19 @@
 import classes from './WritePost.module.css';
 import React from 'react';
+import { addPostActionCreator, onPostChangeActionCreator } from '../../../../state/profile-reducer';
 
 const WritePost = (props) => {
-
+  
   let newPostElement = React.createRef();
   let addPost = () => {
     let text = newPostElement.current.value;
-    props.addPost(text);
+    props.dispatch(addPostActionCreator(text));
   };  
 
   let onPostChange = () => {
     let text = newPostElement.current.value;
-    props.changePostText(text);
-  }
+    props.dispatch(onPostChangeActionCreator(text));
+  };
 
   return (
     <div className={classes.writePost}>

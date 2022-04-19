@@ -1,3 +1,7 @@
+import messageReducer from "./message-reducer";
+import profileReducer from "./profile-reducer";
+import sideBarReducer from "./sideBar-reducer";
+
 let store = {
   _state: {
     profilePage: {
@@ -33,47 +37,26 @@ let store = {
         {id:3, name: 'Kolya'}
       ]
     }
-},
-
+  },
   setState() {
     return this._state;
-  },
-
-  addPost(postMessage) {
-    let newPost = {
-      id: 5, message: postMessage, likeCount: 0
-    };
-    this._state.profilePage.postData.push(newPost);
-    this.rerenderEntireTree();
-    this._state.profilePage.newPostText = '';
-  },
-
-  changePostText(text)  {
-    this._state.profilePage.newPostText = text;
-    this.rerenderEntireTree()
-  },
-  
-  addMessage(textMessage) {
-    let newMessage = {
-      id: 7, message: textMessage
-    }
-    this._state.messagesPage.messagesData.push(newMessage);
-    this.rerenderEntireTree();
-    this._state.messagesPage.newMessageText = '';
-  },
-
-  changeMessageText(text) {
-    this._state.messagesPage.newMessageText = text;
-    this.rerenderEntireTree()
   },
 
   rerenderEntireTree() {
     console.log('yo yo yo')
   },
-
   subscribe(observer) {
     this.rerenderEntireTree = observer;
-  }
+  },
+
+  dispatch(action) {
+    this._state.profilePage = profileReducer(this._state.profilePage, action);
+    this._state.messagesPage = messageReducer(this._state.messagesPage, action);
+    this._state.sideBar =sideBarReducer(this._state.sideBar, action);
+
+    this.rerenderEntireTree()
+  },
+
 };
 
 export default store;
