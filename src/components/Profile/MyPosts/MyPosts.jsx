@@ -1,14 +1,15 @@
 import classes from './MyPosts.module.css';
 import Post from './Post/Post';
 import WritePost from './WritePost/WritePost';
+import WritePostContainer from './WritePost/WritePostContainer';
 
 const MyPosts = (props) => {
-  let postElement = props.profilePage.postData.map(post => <Post message={post.message} likeCount={post.likeCount} />)
-
+  let postElement = props.profilePage.postData.map(post => <Post key={post.id} message={post.message} likeCount={post.likeCount} />)
+  //newPostText={props.profilePage.newPostText} dispatch={props.dispatch}
   return (
     <div className={classes.postBlock}>
       <h2>my post</h2>
-      <WritePost newPostText={props.profilePage.newPostText} dispatch={props.dispatch}/>
+      <WritePostContainer />
       <div className={classes.posts}>
         {postElement}
       </div>

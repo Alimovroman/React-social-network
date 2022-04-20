@@ -2,24 +2,21 @@ import classes from './Dialogs.module.css';
 import DialogsUser from './DialogsUser/DialogsUser';
 import Messages from './Messages/Messages';
 import React from 'react';
-import { addMessageActionCreator, onMessageChangeActionCreator } from '../../state/message-reducer';
 
 const Dialogs = (props) => {
-  let dialogItem = props.messagesPage.dialogsData.map(dialog => <DialogsUser name={dialog.name} id={dialog.id} />);
-  let messageItem = props.messagesPage.messagesData.map(message => <Messages message={message.message} />)
+  let dialogItem = props.messagesPage.dialogsData.map(dialog => <DialogsUser key={dialog.id} name={dialog.name} id={dialog.id} />);
+  let messageItem = props.messagesPage.messagesData.map(message => <Messages key={message.id} message={message.message} />)
 
   let newMassageElement = React.createRef();
 
   const addMessage = () => {
     let text = newMassageElement.current.value;
-    //let action = {type: 'ADD-MESSAGE', newText: text};
-    props.dispatch(addMessageActionCreator(text));
+    props.addMessage(text)
   };
 
   let onMessageChange = () => {
     let text = newMassageElement.current.value;
-    //let action = {type: 'CHANGE-MESSAGE-TEXT', text: newMassageElement.current.value};
-    props.dispatch(onMessageChangeActionCreator(text));
+    props.onMessageChange(text)
   };
 
   return (
