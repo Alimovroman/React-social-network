@@ -1,5 +1,6 @@
 import React from "react";
 import { combineReducers, createStore } from "redux";
+import findUserReducer from "../findUsers-reducer";
 import messageReducer from "./message-reducer";
 import profileReducer from "./profile-reducer";
 import sideBarReducer from "./sideBar-reducer";
@@ -7,7 +8,8 @@ import sideBarReducer from "./sideBar-reducer";
 let reducers = combineReducers({
   profilePage: profileReducer,
   messagesPage: messageReducer,
-  sideBar: sideBarReducer
+  sideBar: sideBarReducer,
+  findUsers: findUserReducer
 });
 
 const store = createStore(reducers);

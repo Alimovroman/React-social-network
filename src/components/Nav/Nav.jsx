@@ -19,6 +19,9 @@ const Nav = (props) => {
           <NavLink to='/music' className={navData => navData.isActive ? classes.active : classes.item}>Music</NavLink>
         </div>
         <div className={classes.item}>
+          <NavLink to='/users' className={navData => navData.isActive ? classes.active : classes.item}>Find users</NavLink>
+        </div>
+        <div className={classes.item}>
           <NavLink to='/settings' className={navData => navData.isActive ? classes.active : classes.item}>Settings</NavLink>
         </div>
         <div>

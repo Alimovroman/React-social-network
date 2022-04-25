@@ -1,0 +1,11 @@
+.userProfile {
+  display: flex;
+}
+.userInfo {
+  display: flex;
+  width: 50%;
+  justify-content: space-between;
+}
+.avatar {
+  width: 100px;
+}
