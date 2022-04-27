@@ -9,3 +9,6 @@
 .avatar {
   width: 100px;
 }
+.selectedPage {
+  background-color: brown;
+}

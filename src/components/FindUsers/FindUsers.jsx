@@ -2,13 +2,18 @@ import * as axios from 'axios';
 import classes from './FindUsers.module.css';
 import avatar from './../../assets/images/avatar-for-users.png';
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 class FindUsers extends React.Component {
   constructor(props) {
     super(props);
+  }
 
-    axios.get('https://social-network.samuraijs.com/api/1.0/users').then(response => {
-      this.props.setUsers(response.data.items)
+  componentDidMount() {
+    axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.findUsers.currentPage}&count=${this.props.findUsers.pageSize}`).then
+    (response => {
+      this.props.setUsers(response.data.items);
+      this.props.setTotalCount(response.data.totalCount);
     })
   }
 
@@ -16,9 +21,29 @@ class FindUsers extends React.Component {
     alert('Hello Roman')
   }
 
+  onSetPage = (pageNumber) => {
+    this.props.setCurrentPage(pageNumber);
+    axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.findUsers.pageSize}`).then(response => {
+      this.props.setUsers(response.data.items)
+    })
+  }
+
   render() {
+    let pageUsers = Math.ceil(this.props.findUsers.totalUsersCount / this.props.findUsers.pageSize);
+    let pagesData = [];
+    for (let i = 1; i <= pageUsers; i++) {
+      pagesData.push(i);
+    }
+
     return (
       <div className={classes.findUsers}>
+        <div>
+          {pagesData.map(p =>
+          (<button key={p} onClick={() => this.onSetPage(p)}
+            className={this.props.findUsers.currentPage === p ? classes.selectedPage : classes.buttonPage}>
+            {p}
+          </button>))}
+        </div>
         {this.props.findUsers.users.map(u =>
           <div key={u.id} className={classes.userProfile}>
             <div>
