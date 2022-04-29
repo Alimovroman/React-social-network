@@ -1,6 +1,7 @@
 import classes from './FindUsers.module.css';
 import avatar from './../../assets/images/avatar-for-users.png';
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 const FindUsers = (props) => {
   let pageUsers = Math.ceil(props.findUsers.totalUsersCount / props.findUsers.pageSize);
@@ -21,7 +22,9 @@ const FindUsers = (props) => {
       {props.findUsers.users.map(u =>
         <div key={u.id} className={classes.userProfile}>
           <div>
-            <img src={u.photos.small !== null ? u.photos.small : avatar} alt='avatar' className={classes.avatar} />
+            <NavLink to={`/profile/${u.id}`}>
+              <img src={u.photos.small !== null ? u.photos.small : avatar} alt='avatar' className={classes.avatar} />
+            </NavLink>
             <div>
               {u.followed ?
                 <button onClick={() => props.unfollow(u.id)}>follow</button> :

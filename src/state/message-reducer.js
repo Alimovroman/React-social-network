@@ -42,8 +42,8 @@ const messageReducer = (state=initialState, action) => {
   }
 };
 
-export const addMessageActionCreator = (text) => ({type: ADD_MESSAGE, newText: text});
-export const onMessageChangeActionCreator = (newText) => {
+export const addMessage = (text) => ({type: ADD_MESSAGE, newText: text});
+export const onMessageChange = (newText) => {
   return {
     type: CHANGE_MESSAGE_TEXT, text: newText
   }
