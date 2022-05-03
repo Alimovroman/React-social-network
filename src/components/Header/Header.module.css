@@ -1,7 +1,14 @@
 .header {
   background-color: darkcyan;
   flex-basis: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .header img {
   width: 100px;
+}
+.loginBlock {
+  color: white;
+  padding-right: 20px;
 }
