@@ -2,6 +2,7 @@ import classes from './FindUsers.module.css';
 import avatar from './../../assets/images/avatar-for-users.png';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { deleteFollowed, postFollowed, userApi } from '../../api/api';
 
 const FindUsers = (props) => {
   let pageUsers = Math.ceil(props.findUsers.totalUsersCount / props.findUsers.pageSize);
@@ -27,8 +28,23 @@ const FindUsers = (props) => {
             </NavLink>
             <div>
               {u.followed ?
-                <button onClick={() => props.unfollow(u.id)}>follow</button> :
-                <button onClick={() => props.follow(u.id)}>unfollow</button>}
+                <button onClick={() => {
+                  userApi.postFollowed(u.id).then(response => {
+                    if (response.data.resultCode == 0) {
+                      props.unfollow(u.id)
+                      console.log(response.resultCode + 'follow')
+                    }
+                  })
+                }}>unfollow</button> :
+                <button onClick={() => {
+
+                  userApi.deleteFollowed(u.id).then(response => {
+                    console.log(response.resultCode + 'unfollow')
+                    //if (response.data.resultCode == 0) {
+                    props.follow(u.id)
+                    // }
+                  })
+                }}>follow</button>}
             </div>
           </div>
           <div className={classes.userInfo}>
@@ -44,7 +60,7 @@ const FindUsers = (props) => {
         </div>
       )}
       <div>
-        <button onClick={() => props.getUsers()}>Show more</button>
+        <button onClick={() => alert(`Hello`)}>Show more</button>
       </div>
     </div>
   )

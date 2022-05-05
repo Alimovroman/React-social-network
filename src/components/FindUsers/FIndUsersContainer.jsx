@@ -1,10 +1,10 @@
 import { connect } from "react-redux";
 import { followed, setCurrentPage, setTotalUserCount, setUsers, toggleIsFetching, unfollowed } from "../../findUsers-reducer";
-import * as axios from 'axios';
 import classes from './FindUsers.module.css';
 import React from 'react';
 import FindUsers from './FindUsers';
 import Preloader from "../common/Preloader/Preloader";
+import { userApi } from "../../api/api";
 
 
 class FindUsersPageContainer extends React.Component {
@@ -14,24 +14,20 @@ class FindUsersPageContainer extends React.Component {
 
   componentDidMount() {
     this.props.toggleIsFetching(true);
-    axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.findUsers.currentPage}&count=${this.props.findUsers.pageSize}`).then
-      (response => {
-        this.props.toggleIsFetching(false);
-        this.props.setUsers(response.data.items);
-        this.props.setTotalUserCount(response.data.totalCount);
-      })
-  }
+    userApi.getUsers(this.props.findUsers.currentPage, this.props.findUsers.pageSize).then(response => {
+      this.props.toggleIsFetching(false);
+      this.props.setUsers(response.items);
+      this.props.setTotalUserCount(response.totalCount);
+    })
 
-  getUsers = () => {
-    alert('Hello Roman')
   }
 
   onSetPage = (pageNumber) => {
     this.props.toggleIsFetching(true);
     this.props.setCurrentPage(pageNumber);
-    axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.findUsers.pageSize}`).then(response => {
+    userApi.getUsers(pageNumber, this.props.findUsers.pageSize).then(response => {
       this.props.toggleIsFetching(false);
-    this.props.setUsers(response.data.items);
+      this.props.setUsers(response.items);
     })
   }
 
@@ -39,8 +35,8 @@ class FindUsersPageContainer extends React.Component {
 
     return (
       <>
-        {this.props.findUsers.isFetching ? <Preloader />: null}
-        <FindUsers onSetPage={this.onSetPage} getUsers={this.getUsers} findUsers={this.props.findUsers}
+        {this.props.findUsers.isFetching ? <Preloader /> : null}
+        <FindUsers onSetPage={this.onSetPage} findUsers={this.props.findUsers}
           unfollow={this.props.unfollowed} follow={this.props.followed} />
       </>
     )
@@ -69,7 +65,7 @@ const FindUsersContainer = connect(mapStateToProps, {
   unfollowed,
   setUsers,
   setCurrentPage,
-  setTotalUserCount, 
+  setTotalUserCount,
   toggleIsFetching
 })(FindUsersPageContainer);
 

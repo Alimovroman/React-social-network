@@ -4,20 +4,15 @@ import axios from "axios"
 import { connect } from "react-redux"
 import { setUserProfile } from "../../state/profile-reducer"
 import { useNavigate, useParams } from "react-router-dom"
+import { profileApi } from "../../api/api"
 
 const ProfileContainerNew = (props) => {
-  const navigate = useNavigate();
   const { userId } = useParams();
   console.log(userId);
 
   useEffect(() => {
-    if (!userId) {
-      axios.get(`https://social-network.samuraijs.com/api/1.0/profile/10`).then(response => {
-        props.setUserProfile(response.data);
-      })
-    }
-    axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${userId}`).then(response => {
-      props.setUserProfile(response.data);
+    profileApi.getProfile(userId).then(response => {
+      props.setUserProfile(response);
     })
   }, [userId]);
 
