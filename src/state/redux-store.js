@@ -1,6 +1,6 @@
 import React from "react";
 import { combineReducers, createStore } from "redux";
-import findUserReducer from "../findUsers-reducer";
+import findUserReducer from "./findUsers-reducer";
 import authReducer from "./auth-reducer";
 import messageReducer from "./message-reducer";
 import profileReducer from "./profile-reducer";

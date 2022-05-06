@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { followed, setCurrentPage, setTotalUserCount, setUsers, toggleIsFetching, unfollowed } from "../../findUsers-reducer";
+import { followed, setCurrentPage, setTotalUserCount, setUsers, toggleIsFetching, toggleIsFollowedInProgress, unfollowed } from "../../state/findUsers-reducer";
 import classes from './FindUsers.module.css';
 import React from 'react';
 import FindUsers from './FindUsers';
@@ -37,7 +37,8 @@ class FindUsersPageContainer extends React.Component {
       <>
         {this.props.findUsers.isFetching ? <Preloader /> : null}
         <FindUsers onSetPage={this.onSetPage} findUsers={this.props.findUsers}
-          unfollow={this.props.unfollowed} follow={this.props.followed} />
+          unfollow={this.props.unfollowed} follow={this.props.followed}
+          toggleIsFollowedInProgress={this.props.toggleIsFollowedInProgress}  />
       </>
     )
   }
@@ -66,7 +67,8 @@ const FindUsersContainer = connect(mapStateToProps, {
   setUsers,
   setCurrentPage,
   setTotalUserCount,
-  toggleIsFetching
+  toggleIsFetching,
+  toggleIsFollowedInProgress
 })(FindUsersPageContainer);
 
 export default FindUsersContainer;
