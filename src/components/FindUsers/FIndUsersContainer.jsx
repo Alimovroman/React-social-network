@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { followed, setCurrentPage, setTotalUserCount, setUsers, toggleIsFetching, toggleIsFollowedInProgress, unfollowed } from "../../state/findUsers-reducer";
+import { followThunkCreator, getUsersThunkCreator, unfollowThunkCreator } from "../../state/findUsers-reducer";
 import classes from './FindUsers.module.css';
 import React from 'react';
 import FindUsers from './FindUsers';
@@ -13,22 +13,24 @@ class FindUsersPageContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.props.toggleIsFetching(true);
-    userApi.getUsers(this.props.findUsers.currentPage, this.props.findUsers.pageSize).then(response => {
-      this.props.toggleIsFetching(false);
-      this.props.setUsers(response.items);
-      this.props.setTotalUserCount(response.totalCount);
-    })
+    this.props.getUsersThunk(this.props.findUsers.currentPage, this.props.findUsers.pageSize)
+    // this.props.toggleIsFetching(true);
+    // userApi.getUsers(this.props.findUsers.currentPage, this.props.findUsers.pageSize).then(response => {
+    //   this.props.toggleIsFetching(false);
+    //   this.props.setUsers(response.items);
+    //   this.props.setTotalUserCount(response.totalCount);
+    // })
 
   }
 
   onSetPage = (pageNumber) => {
-    this.props.toggleIsFetching(true);
-    this.props.setCurrentPage(pageNumber);
-    userApi.getUsers(pageNumber, this.props.findUsers.pageSize).then(response => {
-      this.props.toggleIsFetching(false);
-      this.props.setUsers(response.items);
-    })
+    this.props.getUsersThunk(pageNumber, this.props.findUsers.pageSize)
+    // this.props.toggleIsFetching(true);
+    // this.props.setCurrentPage(pageNumber);
+    // userApi.getUsers(pageNumber, this.props.findUsers.pageSize).then(response => {
+    //   this.props.toggleIsFetching(false);
+    //   this.props.setUsers(response.items);
+    // })
   }
 
   render() {
@@ -36,9 +38,8 @@ class FindUsersPageContainer extends React.Component {
     return (
       <>
         {this.props.findUsers.isFetching ? <Preloader /> : null}
-        <FindUsers onSetPage={this.onSetPage} findUsers={this.props.findUsers}
-          unfollow={this.props.unfollowed} follow={this.props.followed}
-          toggleIsFollowedInProgress={this.props.toggleIsFollowedInProgress}  />
+        <FindUsers onSetPage={this.onSetPage} findUsers={this.props.findUsers} 
+          unfollowThunk={this.props.unfollowThunk} followThunk={this.props.followThunk} />
       </>
     )
   }
@@ -62,13 +63,9 @@ const mapStateToProps = (state) => {
 // }
 
 const FindUsersContainer = connect(mapStateToProps, {
-  followed,
-  unfollowed,
-  setUsers,
-  setCurrentPage,
-  setTotalUserCount,
-  toggleIsFetching,
-  toggleIsFollowedInProgress
+  getUsersThunk: getUsersThunkCreator,
+  unfollowThunk: unfollowThunkCreator,
+  followThunk: followThunkCreator
 })(FindUsersPageContainer);
 
 export default FindUsersContainer;

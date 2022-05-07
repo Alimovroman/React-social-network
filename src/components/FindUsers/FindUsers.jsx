@@ -2,9 +2,6 @@ import classes from './FindUsers.module.css';
 import avatar from './../../assets/images/avatar-for-users.png';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { userApi } from '../../api/api';
-import { isDisabled } from '@testing-library/user-event/dist/utils';
-import { toggleIsFetching } from '../../state/findUsers-reducer';
 
 const FindUsers = (props) => {
   let pageUsers = Math.ceil(props.findUsers.totalUsersCount / props.findUsers.pageSize);
@@ -31,24 +28,10 @@ const FindUsers = (props) => {
             <div>
               {u.followed ?
                 <button disabled={props.findUsers.followedInProgress.some(id=> id === u.id)} onClick={() => {
-                  props.toggleIsFollowedInProgress(u.id, true)
-                  userApi.postFollowed(u.id).then(response => {
-                    if (response.data.resultCode == 0) {
-                      props.unfollow(u.id)
-                      console.log(response.resultCode + 'follow')
-                    }
-                    props.toggleIsFollowedInProgress(u.id, false)
-                  })
+                  props.unfollowThunk(u.id)
                 }}>unfollow</button> :
                 <button disabled={props.findUsers.followedInProgress.some(id=> id === u.id) } onClick={() => {
-                   props.toggleIsFollowedInProgress(u.id,true)
-                  userApi.deleteFollowed(u.id).then(response => {
-                    console.log(response.resultCode + 'unfollow')
-                    //if (response.data.resultCode == 0) {
-                    props.follow(u.id)
-                    // }
-                    props.toggleIsFollowedInProgress(u.id, false)
-                  })
+                  props.followThunk(u.id)
                 }}>follow</button>}
             </div>
           </div>

@@ -1,3 +1,5 @@
+import { userApi } from "../api/api";
+
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET_USERS';
@@ -68,6 +70,42 @@ export const setUsers = (users) => ({ type: SET_USERS, users });
 export const setCurrentPage = (currentPage) => ({ type: SET_CURRENT_PAGE, currentPage });
 export const setTotalUserCount = (totalUsersCount) => ({ type: SET_TOTAL_USER_COUNT, totalUsersCount: totalUsersCount });
 export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching: isFetching });
-export const toggleIsFollowedInProgress = (id, isFetching) => ({ type: TOGGLE_IS_FOLLOWED_IN_PROGRESS, id, isFetching })
+export const toggleIsFollowedInProgress = (id, isFetching) => ({ type: TOGGLE_IS_FOLLOWED_IN_PROGRESS, id, isFetching });
+
+export const getUsersThunkCreator = (currentPage, pageSize) => {
+  return (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    dispatch(setCurrentPage(currentPage)) // Эта строка не требуется в ComponentDidMount
+    userApi.getUsers(currentPage, pageSize).then(response => {
+      dispatch(toggleIsFetching(false));
+      dispatch(setUsers(response.items));
+      dispatch(setTotalUserCount(response.totalCount));
+    })
+  };
+}
+
+export const unfollowThunkCreator = (userID) => {
+  return (dispatch) => {
+    dispatch(toggleIsFollowedInProgress(userID, true) )
+    userApi.postFollowed(userID).then(response => {
+      //if (response.data.resultCode == 0) {
+        dispatch(unfollowed(userID) )
+      //}
+      dispatch(toggleIsFollowedInProgress(userID, false) )
+    })
+  }
+}
+
+export const followThunkCreator = (userId) => {
+  return (dispatch) => {
+    dispatch(toggleIsFollowedInProgress(userId, true) );
+    userApi.deleteFollowed(userId).then(response => {
+      //if (response.data.resultCode == 0) {
+      dispatch(followed(userId) );
+      // }
+      dispatch(toggleIsFollowedInProgress(userId, false) )
+    })
+  }
+}
 
 export default findUserReducer;
