@@ -4,6 +4,8 @@ import axios from "axios"
 import { connect } from "react-redux"
 import { getProfileThunk } from "../../state/profile-reducer"
 import { useParams } from "react-router-dom"
+import withAuthRedirect from "../HOC/WithAuthRedirect"
+import { compose } from "redux"
 
 const ProfileContainerNew = (props) => {
   const { userId } = useParams();
@@ -35,7 +37,9 @@ class ProfileContainer extends React.Component {
   }
 };
 
-const mapStateToProps = (state) => ({ userProfile: state.profilePage.userProfile });
+const mapStateToProps = (state) => ({
+  userProfile: state.profilePage.userProfile
+});
 
-
-export default connect(mapStateToProps, { getProfileThunk })(ProfileContainerNew);
+export default compose(connect(mapStateToProps, { getProfileThunk }),
+  withAuthRedirect)(ProfileContainerNew);

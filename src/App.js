@@ -8,6 +8,7 @@ import SuperDialogContainer from './components/Dialogs/DialogsContainer';
 import FindUsersContainer from './components/FindUsers/FIndUsersContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
+import Login from './components/Login/Login.jsx';
 
 const App = (props) => {
   return (
@@ -23,6 +24,7 @@ const App = (props) => {
           <Route path='/music' element={<Music />} />
           <Route path='/settings' element={<Settings />} />
           <Route path='/users' element={<FindUsersContainer />} />
+          <Route path='/auth' element={<Login />} />
         </Routes>
       </div>
     </div>

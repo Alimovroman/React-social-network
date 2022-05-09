@@ -17,7 +17,7 @@ const ProfileInfo = (props) => {
           <img src={props.userProfile.photos.small} alt='avatar'></img>
         </div>
         <div>
-          <h2 className={classes.nameUser}>{props.userProfile.fullName} and Finished 67 lesson</h2>
+          <h2 className={classes.nameUser}>{props.userProfile.fullName} and Finished 70 lesson</h2>
           <h3>{props.userProfile.lookingForAJobDescription}</h3>
           <p>Job search: {props.userProfile.lookingForAJob ? 'Yes' : 'Not'}</p>
           <p>About Me: {props.userProfile.aboutMe}</p>

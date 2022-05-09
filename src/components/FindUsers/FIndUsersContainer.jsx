@@ -4,7 +4,8 @@ import classes from './FindUsers.module.css';
 import React from 'react';
 import FindUsers from './FindUsers';
 import Preloader from "../common/Preloader/Preloader";
-import { userApi } from "../../api/api";
+import withAuthRedirect from "../HOC/WithAuthRedirect";
+import { compose } from "redux";
 
 
 class FindUsersPageContainer extends React.Component {
@@ -62,10 +63,9 @@ const mapStateToProps = (state) => {
 //   }
 // }
 
-const FindUsersContainer = connect(mapStateToProps, {
+export default compose(withAuthRedirect,
+  connect(mapStateToProps, {
   getUsersThunk: getUsersThunkCreator,
   unfollowThunk: unfollowThunkCreator,
   followThunk: followThunkCreator
-})(FindUsersPageContainer);
-
-export default FindUsersContainer;
+}))(FindUsersPageContainer);

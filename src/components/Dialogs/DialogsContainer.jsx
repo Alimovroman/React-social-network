@@ -2,12 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { addMessage, onMessageChange } from '../../state/message-reducer';
 import Dialogs from './Dialogs';
+import withAuthRedirect from '../HOC/WithAuthRedirect';
+import { compose } from 'redux';
 
 let mapStateToProps = (state) => {
   return {
-    messagesPage: state.messagesPage
+    messagesPage: state.messagesPage,
   }
 };
+
 
 // let mapDispatchToProps = (dispatch) => {
 //   return {
@@ -16,5 +19,5 @@ let mapStateToProps = (state) => {
 //   }
 // }
 
-const SuperDialogContainer = connect(mapStateToProps, {addMessage, onMessageChange})(Dialogs);
-export default SuperDialogContainer;
+export default compose(connect(mapStateToProps, { addMessage, onMessageChange }),
+  withAuthRedirect)(Dialogs)

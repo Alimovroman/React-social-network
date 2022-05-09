@@ -18,7 +18,7 @@ const Dialogs = (props) => {
     let text = newMassageElement.current.value;
     props.onMessageChange(text)
   };
-
+  
   return (
     <div className={classes.dialogWindow}>
       <div className={classes.dialogsUser}>
