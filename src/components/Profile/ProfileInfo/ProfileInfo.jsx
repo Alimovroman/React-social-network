@@ -1,5 +1,6 @@
 import Preloader from '../../common/Preloader/Preloader';
 import classes from './ProfileInfo.module.css';
+import ProfileStatus from './ProfileStatus/ProfileStatus';
 
 let pathAvatar = 'https://sun9-7.userapi.com/impf/c9232/v9232238/364c/CBvTxC4_8VA.jpg?size=130x130&quality=96&sign=75221a12a00bbe5d8d3b94bf4e5ca1fb&c_uniq_tag=_GmlDK_k-KhNVGKhUlfFLLur2XpCwEOrnVh6Mw16sfA&type=album';
 
@@ -17,6 +18,7 @@ const ProfileInfo = (props) => {
           <img src={props.userProfile.photos.small} alt='avatar'></img>
         </div>
         <div>
+          <ProfileStatus profileStatus={`Good maN`}/>
           <h2 className={classes.nameUser}>{props.userProfile.fullName} and Finished 70 lesson</h2>
           <h3>{props.userProfile.lookingForAJobDescription}</h3>
           <p>Job search: {props.userProfile.lookingForAJob ? 'Yes' : 'Not'}</p>
