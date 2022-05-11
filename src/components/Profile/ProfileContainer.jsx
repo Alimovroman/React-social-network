@@ -2,7 +2,7 @@ import Profile from "./Profile"
 import React, { useEffect } from "react"
 import axios from "axios"
 import { connect } from "react-redux"
-import { getProfileThunk } from "../../state/profile-reducer"
+import { getProfileThunk, getStatusThunk, putStatusThunk } from "../../state/profile-reducer"
 import { useParams } from "react-router-dom"
 import withAuthRedirect from "../HOC/WithAuthRedirect"
 import { compose } from "redux"
@@ -13,9 +13,12 @@ const ProfileContainerNew = (props) => {
   useEffect(() => {
     props.getProfileThunk(userId)
   }, [userId]);
+  useEffect(() => {
+    props.getStatusThunk(userId)
+  })
 
   return (
-    <Profile {...props} userProfile={props.userProfile} />
+    <Profile {...props} userProfile={props.userProfile} putStatusThunk={props.putStatusThunk}/>
   )
 }
 
@@ -38,8 +41,9 @@ class ProfileContainer extends React.Component {
 };
 
 const mapStateToProps = (state) => ({
-  userProfile: state.profilePage.userProfile
+  userProfile: state.profilePage.userProfile,
+  status: state.profilePage.status
 });
 
-export default compose(connect(mapStateToProps, { getProfileThunk }),
+export default compose(connect(mapStateToProps, { getProfileThunk, getStatusThunk, putStatusThunk }),
   withAuthRedirect)(ProfileContainerNew);
