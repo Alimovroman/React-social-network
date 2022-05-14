@@ -11,33 +11,57 @@ class ProfileStatus extends React.Component {
     this.onStatusChange = this.onStatusChange.bind(this);
     this.deactivateEditMode = this.deactivateEditMode.bind(this)
   }
-  
-  onStatusChange(e) {
+
+  showingTheStatus = () => {
+    !this.state.editMode
+      ? (<div>
+        <span onDoubleClick={() => this.activateEditMode()}>{this.props.status || `No Status`}</span>
+      </div>)
+      : (<div>
+        <input autoFocus={true} onChange={this.onStatusChange} type='text' value={this.state.status} onBlur={this.deactivateEditMode} />
+      </div>)
+  }
+
+  onStatusChange (e) {
     this.setState({
       status: e.currentTarget.value
     })
-    
   }
-  activateEditMode() {
-    this.setState({
-      editMode: true 
-    });
+  activateEditMode () {
+    if (this.props.userId === 6990) {
+      this.setState({
+        editMode: true
+      });
+    }
   }
-  deactivateEditMode() {
+  deactivateEditMode () {
     this.props.putStatus(this.state.status);
-     setTimeout(() => {
+    setTimeout(() => {
       this.setState({
         editMode: false
       });
-     },200)  
-    
+    }, 200)
   }
+  componentDidUpdate(prevProps, precState) {
+    if (this.props.status !== prevProps.status) {
+      this.setState({
+        status: this.props.status
+      })
+    }
+
+  }
+
   render() {
     return (
       <div>
         {!this.state.editMode
-          ? <span onDoubleClick={() => this.activateEditMode()}>{this.props.status || `No Status`}</span>
-          : <input autoFocus={true} onChange={this.onStatusChange} type='text' value={this.state.status} onBlur={this.deactivateEditMode} />}
+          ? <div>
+            <p onDoubleClick={() => this.activateEditMode()}>{this.props.status || `No Status`}</p>
+          </div>
+          : <div>
+            <input autoFocus={true} onChange={this.onStatusChange} type='text' value={this.state.status} onBlur={this.deactivateEditMode} />
+          </div>
+        }
       </div>
     )
   }

@@ -100,9 +100,10 @@ export const followThunkCreator = (userId) => {
   return (dispatch) => {
     dispatch(toggleIsFollowedInProgress(userId, true) );
     userApi.deleteFollowed(userId).then(response => {
+      console.log(response.data.resultCode)
       //if (response.data.resultCode == 0) {
       dispatch(followed(userId) );
-      // }
+       //}
       dispatch(toggleIsFollowedInProgress(userId, false) )
     })
   }

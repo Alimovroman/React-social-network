@@ -1,6 +1,6 @@
 import classes from './WritePost.module.css';
 import React from 'react';
-import { addPostActionCreator, onPostChangeActionCreator } from '../../../../state/profile-reducer';
+import { addPostActionCreator } from '../../../../state/profile-reducer';
 import WritePost from './WritePost';
 import { connect } from 'react-redux';
 
@@ -36,7 +36,6 @@ let mapStateToProps = (state) => {
 let mapDispatchToProps = (dispatch) => {
   return {
     addPost: (text) => dispatch(addPostActionCreator(text)),
-    onPostChange: (text) =>  dispatch(onPostChangeActionCreator(text))
   }
 }
 

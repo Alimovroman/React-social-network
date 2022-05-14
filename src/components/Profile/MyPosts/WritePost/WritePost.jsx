@@ -1,29 +1,36 @@
 import classes from './WritePost.module.css';
 import React from 'react';
+import { Field } from 'redux-form';
+import { reduxForm } from 'redux-form';
+
+let NewPostForm = (props) => {
+  return (
+    <form onSubmit={props.handleSubmit}>
+      <div>
+        <Field component='textarea' placeholder='your news...' name='newPost'/>
+      </div>
+      <div>
+        <button>Send</button>
+      </div>
+    </form>
+  )
+};
+
+NewPostForm = reduxForm({form: `newPost`})(NewPostForm);
 
 const WritePost = (props) => {
-  
-  let newPostElement = React.createRef();
-  let addPost = () => {
-     let text = newPostElement.current.value;
-    // props.dispatch(addPostActionCreator(text));
-    props.addPost(text)
-  };  
-
-  let onPostChange = () => {
-     let text = newPostElement.current.value;
-    // props.dispatch(onPostChangeActionCreator(text));
-    props.onPostChange(text);
+  let addPost = (formData) => {
+    props.addPost(formData.newPost)
+    formData.newPost = ''
   };
 
+
+  let onSubmit = (formData) => {
+    console.log(formData)
+  }
   return (
     <div className={classes.writePost}>
-      <div>
-        <textarea
-           ref={newPostElement} maxLength='250' cols='80' rows='3' placeholder='your news...'
-           value={props.newPostText} onChange={onPostChange}/>
-      </div>
-      <button onClick={addPost}>Send</button>
+      <NewPostForm onSubmit={addPost}/>
     </div>
   )
 };

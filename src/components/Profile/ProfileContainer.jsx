@@ -8,17 +8,19 @@ import withAuthRedirect from "../HOC/WithAuthRedirect"
 import { compose } from "redux"
 
 const ProfileContainerNew = (props) => {
-  const { userId } = useParams();
-
+  let { userId } = useParams();
+  if (!userId) {
+    userId = 6990
+  }
   useEffect(() => {
-    props.getProfileThunk(userId)
+    props.getProfileThunk(userId);
   }, [userId]);
   useEffect(() => {
     props.getStatusThunk(userId)
   })
 
   return (
-    <Profile {...props} userProfile={props.userProfile} putStatusThunk={props.putStatusThunk}/>
+    <Profile {...props} userProfile={props.userProfile} putStatusThunk={props.putStatusThunk} userId={userId}/>
   )
 }
 

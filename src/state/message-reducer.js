@@ -1,5 +1,4 @@
 const ADD_MESSAGE = 'ADD-MESSAGE';
-const CHANGE_MESSAGE_TEXT = 'CHANGE-MESSAGE-TEXT';
 
 let initialState = {
   messagesData: [
@@ -16,7 +15,6 @@ let initialState = {
     {id: 5,  name: 'Terenazavr'},
     {id: 6,  name: 'SuperMan'}
   ],
-  newMessageText: ''
 }
 
 const messageReducer = (state=initialState, action) => {
@@ -28,25 +26,13 @@ const messageReducer = (state=initialState, action) => {
       return {
         ...state,
         messagesData: [...state.messagesData, newMessage],
-        newMessageText: ''
       };
   
-    case CHANGE_MESSAGE_TEXT:
-      return {
-        ...state,
-        newMessageText: action.text
-      };
-
     default:
       return state;
   }
 };
 
 export const addMessage = (text) => ({type: ADD_MESSAGE, newText: text});
-export const onMessageChange = (newText) => {
-  return {
-    type: CHANGE_MESSAGE_TEXT, text: newText
-  }
-};
 
 export default messageReducer;
