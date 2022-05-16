@@ -3,17 +3,19 @@ import { connect } from "react-redux";
 import { Field } from "redux-form";
 import { reduxForm } from "redux-form";
 import { logoutThunk, postLoginThuk } from "../../state/auth-reducer";
+import { required } from "../../utils/validator";
+import { Input } from "../common/Preloader/FormControl";
 
 let LoginForm = (props) => {
   return (
     <form onSubmit={props.handleSubmit}>
         <div>
-          <Field type='text' name='login' placeholder="Login" component='input'/>
+          <Field type='text' name='login' placeholder="Login" component={Input} validate={required}/>
         </div>
         <div>
-          <Field type='password' name='password' placeholder='Password' component='input'/>
+          <Field type='password' name='password' placeholder='Password' component={Input} validate={required}/>
         </div>
-        <Field type='checkbox' name='checkbox' component='input'/>Remember me
+        <Field type='checkbox' name='checkbox' component={Input}/>Remember me
         <div>
           <button>Login</button>
         </div>
