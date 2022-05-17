@@ -8,8 +8,9 @@ const Header = (props) => {
         <img src="https://c0.klipartz.com/pngpicture/287/900/gratis-png-ilustracion-de-surfista-tabla-de-surf-surf-surf-el-mar-thumbnail.png" alt='logo'></img>
       </div>
       <div>
-        {props.isAuth ? props.login :
-          <NavLink to='/auth' className={classes.loginBlock}>Login</NavLink>
+        {props.isAuth
+          ? <div>{props.login} <button onClick={props.onLogout}>Log out</button></div>
+          : <NavLink to='/auth' className={classes.loginBlock}>Login</NavLink>
         }
       </div>
 

@@ -1,53 +1,55 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Navigate } from "react-router-dom";
 import { Field } from "redux-form";
 import { reduxForm } from "redux-form";
-import { logoutThunk, postLoginThuk } from "../../state/auth-reducer";
+import { postLoginThuk } from "../../state/auth-reducer";
 import { required } from "../../utils/validator";
 import { Input } from "../common/Preloader/FormControl";
+import classes from './Login.module.css'
 
 let LoginForm = (props) => {
   return (
     <form onSubmit={props.handleSubmit}>
-        <div>
-          <Field type='text' name='login' placeholder="Login" component={Input} validate={required}/>
-        </div>
-        <div>
-          <Field type='password' name='password' placeholder='Password' component={Input} validate={required}/>
-        </div>
-        <Field type='checkbox' name='checkbox' component={Input}/>Remember me
-        <div>
-          <button>Login</button>
-        </div>
-        <div>
-          <button>Logout</button>
-        </div>
-      </form>
+      <div>
+        <Field type='text' name='email' placeholder="email" component={Input} validate={required} />
+      </div>
+      <div>
+        <Field type='password' name='password' placeholder='Password' component={Input} validate={required} />
+      </div>
+      <div>
+        <Field type='checkbox' name='checkbox' component={Input} />Remember me
+      </div>
+      {props.error
+        ? <div className={classes.error}>{props.error}</div>
+        : null}
+      <div>
+        <button>Login</button>
+      </div>
+    </form>
   )
 }
 
-LoginForm = reduxForm({form: 'login'})(LoginForm)
+LoginForm = reduxForm({ form: 'login' })(LoginForm)
 
 const Login = (props) => {
   const onSubmit = (formData) => {
-   // props.postLoginThuk(formData.login, formData.password, formData.checkbox)
-    console.log(props.logAuth)
-    if (!props.logAuth) {
-     return props.postLoginThuk(formData.login, formData.password, formData.checkbox)
-    } return props.logoutThunk()
+    props.postLoginThuk(formData.email, formData.password, formData.checkbox)
   }
-  
+  if (props.isAuth) {
+    return <Navigate to={'/profile'} />
+  }
   return (
     <div>
       <h2>Login</h2>
-      <LoginForm onSubmit={onSubmit}/>
+      <LoginForm onSubmit={onSubmit} />
     </div>
   )
 };
 
 let mapStateToProps = (state) => ({
-  logAuth: state.auth.logAuth
+  isAuth: state.auth.isAuth
 });
 
 
-export default connect(mapStateToProps, {postLoginThuk, logoutThunk})(Login);
+export default connect(mapStateToProps, { postLoginThuk })(Login);

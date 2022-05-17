@@ -19,7 +19,7 @@ const ProfileInfo = (props) => {
         </div>
         <div>
           <ProfileStatus status={props.status} putStatus={props.putStatus} userId={props.userId}/>
-          <h2 className={classes.nameUser}>{props.userProfile.fullName} and Finished 76 lesson</h2>
+          <h2 className={classes.nameUser}>{props.userProfile.fullName} and Finished 79 lesson</h2>
           <h3>{props.userProfile.lookingForAJobDescription}</h3>
           <p>Job search: {props.userProfile.lookingForAJob ? 'Yes' : 'Not'}</p>
           <p>About Me: {props.userProfile.aboutMe}</p>
