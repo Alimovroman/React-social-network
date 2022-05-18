@@ -38,12 +38,14 @@ const logout = () => ({ type: LOGOUT })
 
 export const setAuthUsersThunk = () => {
   return (dispatch) => {
-    loginApi.getLogin().then(response => {
-      if (response.data.resultCode === 0) {
-        let { id, login, email } = response.data.data
-        dispatch(setAuthUserData(id, login, email))
-      }
-    })
+    return (
+      loginApi.getLogin().then(response => {
+        if (response.data.resultCode === 0) {
+          let { id, login, email } = response.data.data
+          dispatch(setAuthUserData(id, login, email))
+        }
+      })
+    )  
   }
 }
 export const postLoginThuk = (email, password, rememberMe) => {

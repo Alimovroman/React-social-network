@@ -6,6 +6,7 @@ import FindUsers from './FindUsers';
 import Preloader from "../common/Preloader/Preloader";
 import withAuthRedirect from "../HOC/WithAuthRedirect";
 import { compose } from "redux";
+import { getFindUsers } from "../../state/findUsers-selectors";
 
 
 class FindUsersPageContainer extends React.Component {
@@ -15,27 +16,13 @@ class FindUsersPageContainer extends React.Component {
 
   componentDidMount() {
     this.props.getUsersThunk(this.props.findUsers.currentPage, this.props.findUsers.pageSize)
-    // this.props.toggleIsFetching(true);
-    // userApi.getUsers(this.props.findUsers.currentPage, this.props.findUsers.pageSize).then(response => {
-    //   this.props.toggleIsFetching(false);
-    //   this.props.setUsers(response.items);
-    //   this.props.setTotalUserCount(response.totalCount);
-    // })
-
   }
 
   onSetPage = (pageNumber) => {
     this.props.getUsersThunk(pageNumber, this.props.findUsers.pageSize)
-    // this.props.toggleIsFetching(true);
-    // this.props.setCurrentPage(pageNumber);
-    // userApi.getUsers(pageNumber, this.props.findUsers.pageSize).then(response => {
-    //   this.props.toggleIsFetching(false);
-    //   this.props.setUsers(response.items);
-    // })
   }
 
   render() {
-
     return (
       <>
         {this.props.findUsers.isFetching ? <Preloader /> : null}
@@ -48,7 +35,7 @@ class FindUsersPageContainer extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    findUsers: state.findUsers
+    findUsers: getFindUsers(state)
   }
 };
 
@@ -63,7 +50,8 @@ const mapStateToProps = (state) => {
 //   }
 // }
 
-export default compose(withAuthRedirect,
+export default compose(
+  //withAuthRedirect,
   connect(mapStateToProps, {
   getUsersThunk: getUsersThunkCreator,
   unfollowThunk: unfollowThunkCreator,

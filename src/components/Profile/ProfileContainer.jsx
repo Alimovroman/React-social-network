@@ -10,7 +10,7 @@ import { compose } from "redux"
 const ProfileContainerNew = (props) => {
   let { userId } = useParams();
   if (!userId) {
-    userId = 6990
+    userId = props.authorizedUserId
   }
   useEffect(() => {
     props.getProfileThunk(userId);
@@ -44,7 +44,9 @@ class ProfileContainer extends React.Component {
 
 const mapStateToProps = (state) => ({
   userProfile: state.profilePage.userProfile,
-  status: state.profilePage.status
+  status: state.profilePage.status,
+  authorizedUserId: state.auth.id,
+  isAuth: state.auth.isAuth
 });
 
 export default compose(connect(mapStateToProps, { getProfileThunk, getStatusThunk, putStatusThunk }),
