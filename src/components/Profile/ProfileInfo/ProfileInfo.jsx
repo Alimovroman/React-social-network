@@ -1,11 +1,10 @@
 import Preloader from '../../common/Preloader/Preloader';
 import classes from './ProfileInfo.module.css';
 import ProfileStatus from './ProfileStatus/ProfileStatus';
+import avatar from '../../../assets/images/avatar-for-users.png'
 
-let pathAvatar = 'https://sun9-7.userapi.com/impf/c9232/v9232238/364c/CBvTxC4_8VA.jpg?size=130x130&quality=96&sign=75221a12a00bbe5d8d3b94bf4e5ca1fb&c_uniq_tag=_GmlDK_k-KhNVGKhUlfFLLur2XpCwEOrnVh6Mw16sfA&type=album';
-
-const ProfileInfo = (props) => {
-  if (props.userProfile == null || undefined) {
+const ProfileInfo = ({userProfile, authorizedUserId, status, putStatus, userId}) => {
+  if (userProfile == null || undefined) {
     return <Preloader />
   }
   return (
@@ -15,19 +14,19 @@ const ProfileInfo = (props) => {
       </div>
       <div className={classes.userProfile}>
         <div>
-          <img src={props.userProfile.photos.small} alt='avatar'></img>
+          <img src={userProfile.photos.small ? userProfile.photos.small :  avatar} alt='avatar' className={classes.avatar}></img>
         </div>
         <div>
-          <ProfileStatus status={props.status} putStatus={props.putStatus} userId={props.userId}/>
-          <h2 className={classes.nameUser}>{props.userProfile.fullName} and Finished 79 lesson</h2>
-          <h3>{props.userProfile.lookingForAJobDescription}</h3>
-          <p>Job search: {props.userProfile.lookingForAJob ? 'Yes' : 'Not'}</p>
-          <p>About Me: {props.userProfile.aboutMe}</p>
+          <ProfileStatus authorizedUserId={authorizedUserId} status={status} putStatus={putStatus} userId={userId}/>
+          <h2 className={classes.nameUser}>{userProfile.fullName} and Finished 88 lesson</h2>
+          <h3>{userProfile.lookingForAJobDescription}</h3>
+          <p>Job search: {userProfile.lookingForAJob ? 'Yes' : 'Not'}</p>
+          <p>About Me: {userProfile.aboutMe}</p>
           <div>
             <h4>Social network</h4>
-            <p>Vk: <a href='#'>{props.userProfile.contacts.vk}</a></p>
-            <p>Website:  <a href='#'>{props.userProfile.contacts.website}</a></p>
-            <p>instagram:  <a href='#'>{props.userProfile.contacts.instagram}</a></p>
+            <p>Vk: <a href={`http://${userProfile.contacts.vk}`}>{userProfile.contacts.vk}</a></p>
+            <p>Website:  <a href={`http://${userProfile.contacts.website}`}>{userProfile.contacts.website}</a></p>
+            <p>instagram:  <a href={`http://${userProfile.contacts.instagram}`}>{userProfile.contacts.instagram}</a></p>
           </div>
         </div>
       </div>

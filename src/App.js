@@ -16,14 +16,9 @@ import { initializationAppThunk } from './state/app-reducer';
 import Preloader from './components/common/Preloader/Preloader'
 
 class App extends React.Component {
-  constructor(props) {
-    super(props)
-  };
-
   componentDidMount() {
     this.props.initializationAppThunk()
   }
-
   render() {
     if (!this.props.initialization) {
       return <Preloader />
@@ -53,4 +48,4 @@ let mapStateToProps = (state) => {
     initialization: state.app.initialization
   }
 }
-export default compose( connect(mapStateToProps, { initializationAppThunk }))(App);
+export default compose(connect(mapStateToProps, { initializationAppThunk }))(App);

@@ -1,11 +1,13 @@
+import React, { PureComponent } from 'react';
 import classes from './MyPosts.module.css';
 import Post from './Post/Post';
 import WritePost from './WritePost/WritePost';
 import WritePostContainer from './WritePost/WritePostContainer';
 
+
 const MyPosts = (props) => {
+  console.log(`Render`)
   let postElement = props.profilePage.postData.map(post => <Post key={post.id} message={post.message} likeCount={post.likeCount} />)
-  //newPostText={props.profilePage.newPostText} dispatch={props.dispatch}
   return (
     <div className={classes.postBlock}>
       <h2>my post</h2>

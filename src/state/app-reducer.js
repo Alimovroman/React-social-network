@@ -1,6 +1,6 @@
 import { setAuthUsersThunk } from "./auth-reducer";
 
-const initialization_Success = 'initialization_Success';
+const initialization_Success = 'APP/initialization_Success';
 
 let initialState = {
   initialization: false

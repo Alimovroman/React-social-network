@@ -1,9 +1,9 @@
 import { profileApi } from "../api/api";
 
-const ADD_POST = 'ADD-POST';
-
-const SET_USER_PROFILE = 'SET_USER_PROFILE';
-const SET_STATUS_PROFILE = 'SET_STATUS_PROFILE';
+const ADD_POST = 'PROFILE_REDUCER/ADD-POST';
+const DELETE_POST = 'PROFILE_REDUCER/DELETE_POST'
+const SET_USER_PROFILE = 'PROFILE_REDUCER/SET_USER_PROFILE';
+const SET_STATUS_PROFILE = 'PROFILE_REDUCER/SET_STATUS_PROFILE';
 
 let initialState = {
   postData: [
@@ -26,10 +26,11 @@ const profileReducer = (state = initialState, action) => {
         ...state,
         postData: [...state.postData, newPost],
       };
-    //stateCopy.postData = [...state.postData];
-    //stateCopy.postData.push(newPost);
-    //stateCopy.newPostText = '';
-
+    case DELETE_POST:
+      return {
+        ...state,
+        postData: state.postData.filter(p => p.id !== action.userId)
+      }
     case SET_USER_PROFILE:
       return {
         ...state,
@@ -48,32 +49,29 @@ const profileReducer = (state = initialState, action) => {
 };
 
 export const addPostActionCreator = (text) => ({ type: ADD_POST, postMessage: text });
-
+export const deletePost = (userId) => ({type: DELETE_POST, userId})
 export const setUserProfile = (userProfile) => ({ type: SET_USER_PROFILE, userProfile });
 export const getStatusProfile = (status) => ({ type: SET_STATUS_PROFILE, status })
 
 
 export const getProfileThunk = (userId) => {
-  return (dispatch) => {
-    profileApi.getProfile(userId).then(response => {
+  return async (dispatch) => {
+    let response = await profileApi.getProfile(userId);
       dispatch(setUserProfile(response));
-    })
   }
 }
 export const getStatusThunk = (userId) => {
-  return (dispatch) => {
-    profileApi.getStatus(userId).then(response => {
+  return async (dispatch) => {
+    let response = await profileApi.getStatus(userId);
       dispatch(getStatusProfile(response))
-    })
   }
 }
 export const putStatusThunk = (status) => {
-  return (dispatch) => {
-    profileApi.putStatus(status).then(response => {
+  return async (dispatch) => {
+    let response = await profileApi.putStatus(status);
       if (response.resultCode === 0) {
         dispatch(getStatusProfile(response))
       }
-    })
   }
 }
 export default profileReducer;
