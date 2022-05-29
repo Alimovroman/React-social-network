@@ -1,5 +1,6 @@
 import { Field } from 'redux-form';
-import classes from './FormControl.module.css'
+import classes from './FormControl.module.css';
+import React from 'react';
 
 const FormControl = ({ input, meta: { touched, error, warning }, children, ...props }) => {
   return (

@@ -1,9 +1,9 @@
 import classes from './WritePost.module.css';
-import React from 'react';
 import { Field } from 'redux-form';
 import { reduxForm } from 'redux-form';
 import { maxLengthCreator, required } from '../../../../utils/validator';
 import { Textarea } from '../../../common/Preloader/FormControl';
+import React from 'react';
 
 const maxLength15 = maxLengthCreator(15);
 
@@ -28,10 +28,6 @@ const WritePost = (props) => {
     formData.newPost = ''
   };
 
-
-  let onSubmit = (formData) => {
-    console.log(formData)
-  }
   return (
     <div className={classes.writePost}>
       <NewPostForm onSubmit={addPost}/>

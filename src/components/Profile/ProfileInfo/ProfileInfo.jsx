@@ -1,7 +1,8 @@
 import Preloader from '../../common/Preloader/Preloader';
 import classes from './ProfileInfo.module.css';
 import ProfileStatus from './ProfileStatus/ProfileStatus';
-import avatar from '../../../assets/images/avatar-for-users.png'
+import avatar from '../../../assets/images/avatar-for-users.png';
+import React from 'react';
 
 const ProfileInfo = ({userProfile, authorizedUserId, status, putStatus, userId}) => {
   if (userProfile == null || undefined) {
@@ -18,7 +19,7 @@ const ProfileInfo = ({userProfile, authorizedUserId, status, putStatus, userId})
         </div>
         <div>
           <ProfileStatus authorizedUserId={authorizedUserId} status={status} putStatus={putStatus} userId={userId}/>
-          <h2 className={classes.nameUser}>{userProfile.fullName} and Finished 88 lesson</h2>
+          <h2 className={classes.nameUser}>{userProfile.fullName} and Finished 94 lesson</h2>
           <h3>{userProfile.lookingForAJobDescription}</h3>
           <p>Job search: {userProfile.lookingForAJob ? 'Yes' : 'Not'}</p>
           <p>About Me: {userProfile.aboutMe}</p>

@@ -4,9 +4,9 @@ import { Route, Routes } from 'react-router-dom';
 import Music from './components/Music/Music';
 import News from './components/News/News';
 import Settings from './components/Settings/Settings';
-import SuperDialogContainer from './components/Dialogs/DialogsContainer';
+// import SuperDialogContainer from './components/Dialogs/DialogsContainer';
 import FindUsersContainer from './components/FindUsers/FIndUsersContainer';
-import ProfileContainer from './components/Profile/ProfileContainer';
+// import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
 import Login from './components/Login/Login.jsx';
 import React from 'react';
@@ -14,6 +14,13 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { initializationAppThunk } from './state/app-reducer';
 import Preloader from './components/common/Preloader/Preloader'
+import WithReactLazy from './components/HOC/WithReactLazy';
+
+const SuperDialogContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
+const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
+
+const WithSuperDialogContainer = WithReactLazy(SuperDialogContainer);
+const WithProfileContainer = WithReactLazy(ProfileContainer)
 
 class App extends React.Component {
   componentDidMount() {
@@ -28,9 +35,9 @@ class App extends React.Component {
         <Nav />
         <div className='app-wrapper-content'>
           <Routes>
-            <Route path='/profile/:userId' element={<ProfileContainer />} />
-            <Route path='/profile/' element={<ProfileContainer />} />
-            <Route path='/dialogs' element={<SuperDialogContainer />} />
+            <Route path='/profile/:userId' element={<WithProfileContainer />} />
+            <Route path='/profile/' element={<WithProfileContainer />} />
+            <Route path='/dialogs' element={<WithSuperDialogContainer />} />
             <Route path='/news' element={<News />} />
             <Route path='/music' element={<Music />} />
             <Route path='/settings' element={<Settings />} />
@@ -48,4 +55,5 @@ let mapStateToProps = (state) => {
     initialization: state.app.initialization
   }
 }
+//export default App;
 export default compose(connect(mapStateToProps, { initializationAppThunk }))(App);

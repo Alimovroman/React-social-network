@@ -6,13 +6,10 @@ import User from './User';
 const FindUsers = (props) => {
   return (
     <div className={classes.findUsers}>
-      <Paginator findUsers={props.findUsers} onSetPage={props.onSetPage}/>
+      <Paginator findUsers={props.findUsers} totalItemsCount={props.findUsers.totalUsersCount} onSetPage={props.onSetPage} />
       {props.findUsers.users.map(u =>
-        <User key={u.id} findUsers={props.findUsers} unfollowThunk={props.unfollowThunk} followThunk={props.followThunk} user={u}/>
+        <User key={u.id} findUsers={props.findUsers} unfollowThunk={props.unfollowThunk} followThunk={props.followThunk} user={u} />
       )}
-      <div>
-        <button onClick={() => alert(`Hello`)}>Show more</button>
-      </div>
     </div>
   )
 };

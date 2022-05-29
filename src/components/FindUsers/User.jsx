@@ -1,6 +1,7 @@
 import classes from './FindUsers.module.css';
 import avatar from './../../assets/images/avatar-for-users.png';
 import { NavLink } from 'react-router-dom';
+import React from 'react';
 
 const User = ({findUsers: {followedInProgress}, user, unfollowThunk, followThunk}) => {
   return (

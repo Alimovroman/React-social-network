@@ -11,11 +11,11 @@ const TOGGLE_IS_FOLLOWED_IN_PROGRESS = 'FIND-USER/TOGGLE_IS_FOLLOWED_IN_PROGRESS
 
 let initialState = {
   users: [],
-  pageSize: 100,
+  pageSize: 10,
   totalUsersCount: 0,
   currentPage: 1,
   isFetching: false,
-  followedInProgress: []
+  followedInProgress: [],
 };
 
 const findUserReducer = (state = initialState, action) => {

@@ -1,4 +1,5 @@
 import classes from './../../Nav.module.css'
+import React from 'react';
 
 const FriendItem = (props) => {
   return (
