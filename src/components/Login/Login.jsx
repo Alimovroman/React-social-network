@@ -2,12 +2,12 @@ import React from "react";
 import { connect } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { reduxForm } from "redux-form";
-import { postLoginThuk } from "../../state/auth-reducer";
+import { postLoginThunk } from "../../state/auth-reducer";
 import { required } from "../../utils/validator";
 import { createField, Input } from "../common/Preloader/FormControl";
 import classes from './Login.module.css'
 
-let LoginForm = ({handleSubmit, error}) => {
+let LoginForm = ({handleSubmit, error, captchaUrl}) => {
   return (
     <form onSubmit={handleSubmit}>
       {createField('text', 'email', 'email', Input, required)}
@@ -16,6 +16,8 @@ let LoginForm = ({handleSubmit, error}) => {
       {error
         ? <div className={classes.error}>{error}</div>
         : null}
+      {captchaUrl && <img src={captchaUrl} alt='captcha'/>}
+      {captchaUrl && createField(`text`, `captcha`, `symbol`, Input, null)}
       <div>
         <button>Login</button>
       </div>
@@ -25,9 +27,9 @@ let LoginForm = ({handleSubmit, error}) => {
 
 LoginForm = reduxForm({ form: 'login' })(LoginForm)
 
-const Login = ({postLoginThuk, isAuth}) => {
+const Login = ({postLoginThunk, isAuth, captchaUrl}) => {
   const onSubmit = (formData) => {
-    postLoginThuk(formData.email, formData.password, formData.checkbox)
+    postLoginThunk(formData.email, formData.password, formData.checkbox, formData.captcha)
   }
   if (isAuth) {
     return <Navigate to={'/profile'} />
@@ -35,14 +37,15 @@ const Login = ({postLoginThuk, isAuth}) => {
   return (
     <div>
       <h2>Login</h2>
-      <LoginForm onSubmit={onSubmit} />
+      <LoginForm onSubmit={onSubmit} captchaUrl={captchaUrl}/>
     </div>
   )
 };
 
 let mapStateToProps = (state) => ({
-  isAuth: state.auth.isAuth
+  isAuth: state.auth.isAuth,
+  captchaUrl: state.auth.captchaUrl
 });
 
 
-export default connect(mapStateToProps, { postLoginThuk })(Login);
+export default connect(mapStateToProps, { postLoginThunk })(Login);

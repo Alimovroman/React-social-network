@@ -1,6 +1,6 @@
-.error :first-child {
+.error, .error :first-child {
   border: rgb(135, 33, 33) 3px solid;
 }
-.formControl >span{
+.error, .formControl >span{
   color: rgb(135, 33, 33);
 }
