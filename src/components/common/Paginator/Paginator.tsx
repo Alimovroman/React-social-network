@@ -2,10 +2,20 @@ import { useState } from 'react';
 import classes from './Paginator.module.css';
 import React from 'react';
 
-const Paginator = ({ findUsers: { pageSize, currentPage }, totalItemsCount, onSetPage, portionSize = 10 }) => {
+export type PaginatorPropsType = {
+  findUsers: {
+    pageSize: number, 
+    currentPage: number
+  }
+  totalItemsCount: number, 
+  onSetPage: (pages:number) => void, 
+  portionSize?: number
+}
+
+const Paginator: React.FC<PaginatorPropsType> = ({ findUsers: { pageSize, currentPage }, totalItemsCount, onSetPage, portionSize = 10 }) => {
 
   let pageUsers = Math.ceil(totalItemsCount / pageSize);
-  let pagesData = [];
+  let pagesData: number[] = [];
   for (let i = 1; i <= pageUsers; i++) {
     pagesData.push(i);
   };

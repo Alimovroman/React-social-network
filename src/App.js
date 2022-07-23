@@ -1,6 +1,6 @@
 import './App.css';
 import Nav from './components/Nav/Nav';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Music from './components/Music/Music';
 import News from './components/News/News';
 import Settings from './components/Settings/Settings';
@@ -23,8 +23,15 @@ const WithSuperDialogContainer = WithReactLazy(SuperDialogContainer);
 const WithProfileContainer = WithReactLazy(ProfileContainer)
 
 class App extends React.Component {
+  catchAllUnhandleErrors = (PromiseRejectEvent) => {
+    console.log(`Some Error Occured`)
+  }
   componentDidMount() {
-    this.props.initializationAppThunk()
+    this.props.initializationAppThunk();
+    window.addEventListener('unhandledrejection', this.catchAllUnhandleErrors); // если в промисах пришла ошибка, она поямается и отобразиться
+  }
+  componentWillUnmount() {
+    window.removeEventListener('unhandledrejection', this.catchAllUnhandleErrors);
   }
   render() {
     if (!this.props.initialization) {
@@ -35,6 +42,7 @@ class App extends React.Component {
         <Nav />
         <div className='app-wrapper-content'>
           <Routes>
+            <Route path='/' element={<Navigate to='/profile' />} />  {/*Стартовая Страница профайл */}
             <Route path='/profile/:userId' element={<WithProfileContainer />} />
             <Route path='/profile/' element={<WithProfileContainer />} />
             <Route path='/dialogs' element={<WithSuperDialogContainer />} />
@@ -43,6 +51,7 @@ class App extends React.Component {
             <Route path='/settings' element={<Settings />} />
             <Route path='/users' element={<FindUsersContainer />} />
             <Route path='/auth' element={<Login />} />
+            <Route path='*' element={<h2>404</h2>} />
           </Routes>
         </div>
       </div>

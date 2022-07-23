@@ -1,19 +1,26 @@
 import { connect } from "react-redux";
-import { followThunkCreator, getUsersThunkCreator, unfollowThunkCreator } from "../../state/findUsers-reducer";
+import { followThunkCreator, getUsersThunkCreator, InitialStateTypeForFindUsers, unfollowThunkCreator } from "../../state/findUsers-reducer";
 import React from 'react';
 import FindUsers from './FindUsers';
 import Preloader from "../common/Preloader/Preloader";
 import { compose } from "redux";
 import { getFindUsers } from "../../state/findUsers-selectors";
+import { RootState } from "../../state/redux-store";
 
+type PropsType = {
+  findUsers: InitialStateTypeForFindUsers
+  getUsersThunk: (currentPage: number, pageSize: number) => void
+  unfollowThunk: (id: number) => void
+  followThunk: (id: number) => void
+}
 
-class FindUsersPageContainer extends React.Component {
+class FindUsersPageContainer extends React.Component<PropsType> {
   componentDidMount() {
     let {currentPage, pageSize} = this.props.findUsers
     this.props.getUsersThunk(currentPage, pageSize)
   }
 
-  onSetPage = (pageNumber) => {
+  onSetPage = (pageNumber: number) => {
     const {pageSize} = this.props.findUsers
     this.props.getUsersThunk(pageNumber, pageSize)
   }
@@ -29,7 +36,7 @@ class FindUsersPageContainer extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: RootState) => {
   return {
     findUsers: getFindUsers(state)
   }

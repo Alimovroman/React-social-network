@@ -7,6 +7,8 @@ import sideBarReducer from "./sideBar-reducer";
 import thunk from "redux-thunk";
 import { reducer as formReducer } from 'redux-form'
 import appReducer from "./app-reducer";
+import { useDispatch } from "react-redux";
+
 
 let reducers = combineReducers({
   profilePage: profileReducer,
@@ -18,7 +20,12 @@ let reducers = combineReducers({
   form: formReducer
 });
 
+
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
+// export const useAppDispatch: () => AppDispatch = useDispatch
+
+// @ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducers, composeEnhancers( applyMiddleware(thunk) ));   
-window.store = store
 export default store;
