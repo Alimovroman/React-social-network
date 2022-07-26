@@ -3,10 +3,12 @@ import { addMessage } from '../../state/message-reducer';
 import Dialogs from './Dialogs';
 import withAuthRedirect from '../HOC/WithAuthRedirect';
 import { compose } from 'redux';
+import { RootState } from '../../state/redux-store';
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: RootState) => {
   return {
-    messagesPage: state.messagesPage,
+    messages: state.messagesPage.messagesData,
+    dialogs: state.messagesPage.dialogsData
   }
 };
 

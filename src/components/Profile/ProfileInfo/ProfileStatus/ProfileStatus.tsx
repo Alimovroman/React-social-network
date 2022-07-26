@@ -4,7 +4,7 @@ type Props = {
   authorizedUserId: number
   status: string
   putStatus: (status:string) => void
-  userId: number
+  userId: string
 }
 
 const ProfileStatus: React.FC<Props> = ({authorizedUserId, status, putStatus, userId}) => {
@@ -12,7 +12,7 @@ const ProfileStatus: React.FC<Props> = ({authorizedUserId, status, putStatus, us
   const [editMode, setEditMode] = useState(false)
 
   let activateEditMode = () => {
-    if (userId === authorizedUserId) {
+    if (Number(userId) === authorizedUserId) {
       setEditMode(true)
     }
   };

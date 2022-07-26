@@ -1,15 +1,20 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Navigate } from 'react-router-dom';
+import { RootState } from "../../state/redux-store";
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: RootState) => {
   return {
     loginIsAuth: state.auth.isAuth
   }
 };
 
-const withAuthRedirect = (WrappedComponent) => {
-  class RedirectComponent extends React.Component {
+type PropsType = {
+  loginIsAuth: boolean
+}
+
+const withAuthRedirect = (WrappedComponent: any) => {
+  class RedirectComponent extends React.Component<PropsType> {
     render() {
       if (!this.props.loginIsAuth) return <Navigate to={'/auth'} />
       return <WrappedComponent {...this.props} />

@@ -3,11 +3,11 @@ import { Field } from 'redux-form';
 import { reduxForm } from 'redux-form';
 import { maxLengthCreator, required } from '../../../../utils/validator';
 import { Textarea } from '../../../common/Preloader/FormControl';
-import React from 'react';
+import React, { FC } from 'react';
 
 const maxLength15 = maxLengthCreator(15);
 
-let NewPostForm = (props) => {
+let NewPostForm = (props: any) => {
   return (
     <form onSubmit={props.handleSubmit}>
       <div>
@@ -20,17 +20,22 @@ let NewPostForm = (props) => {
   )
 };
 
+//@ts-ignore
 NewPostForm = reduxForm({form: `newPost`})(NewPostForm);
 
-const WritePost = (props) => {
-  let addPost = (formData) => {
-    props.addPost(formData.newPost)
+type PropsType = {
+  addPost: (newPost: string) => void
+}
+
+const WritePost: FC<PropsType> = ({addPost}) => {
+  let addPostToForm = (formData: any) => {
+    addPost(formData.newPost)
     formData.newPost = ''
   };
 
   return (
     <div className={classes.writePost}>
-      <NewPostForm onSubmit={addPost}/>
+      <NewPostForm onSubmit={addPostToForm}/>
     </div>
   )
 };

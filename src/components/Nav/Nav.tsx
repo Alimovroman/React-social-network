@@ -1,9 +1,9 @@
 import { NavLink } from 'react-router-dom';
 import FriendsContainer from './Friends/FriendsContainer';
 import classes from './Nav.module.css';
-import React from 'react';
+import React, { FC } from 'react';
 
-const Nav = (props) => {
+const Nav: FC = () => {
   return (
     <nav className={classes.nav}>
         <div className={classes.item}>

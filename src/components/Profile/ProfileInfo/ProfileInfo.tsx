@@ -2,15 +2,31 @@ import Preloader from '../../common/Preloader/Preloader';
 import classes from './ProfileInfo.module.css';
 import ProfileStatus from './ProfileStatus/ProfileStatus';
 import avatar from '../../../assets/images/avatar-for-users.png';
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import ProfileStatusForm from './ProfileStatusForm/ProfileStatusForm';
+import { UserProfileType } from '../../../types/types';
 
-const ProfileInfo = ({ userProfile, authorizedUserId, status, putStatus, userId, isOwner, savePhoto, saveProfileInfo }) => {
+type ResponseType = {
+  saved: string
+}
+
+type PropsType = {
+  authorizedUserId: number
+  userProfile: UserProfileType
+  status: string
+  userId: string
+  isOwner: boolean
+  putStatus: (status: string) => void
+  savePhoto: (photo: string) => void
+  saveProfileInfo: (userProfile: UserProfileType) => void
+}
+
+const ProfileInfo: FC<PropsType> = ({ userProfile, authorizedUserId, status, putStatus, userId, isOwner, savePhoto, saveProfileInfo }) => {
   const [editMode, setEditMode] = useState(false);
   if (userProfile == null || undefined) {
     return <Preloader />
   }
-  let onAddAvatarOnServer = (e) => {
+  let onAddAvatarOnServer = (e: any) => {
     if (e.target.files.length) {
       savePhoto(e.target.files[0]);
     }
@@ -19,13 +35,14 @@ const ProfileInfo = ({ userProfile, authorizedUserId, status, putStatus, userId,
     setEditMode(true)
   }
 
-  let onSave = (formData) => {  
-    saveProfileInfo(formData).then(response => {
-      if(response.saved === `saved`) {
+  let onSave = (formData: any) => {
+    //@ts-ignore
+    saveProfileInfo(formData).then((response: ResponseType) => {
+      if (response.saved === `saved`) {
         setEditMode(false)
       } else {
         setEditMode(true)
-      }    
+      }
     })
   }
 
@@ -43,7 +60,8 @@ const ProfileInfo = ({ userProfile, authorizedUserId, status, putStatus, userId,
           <ProfileStatus authorizedUserId={authorizedUserId} status={status} putStatus={putStatus} userId={userId} />
           {!editMode
             ? <ProfileStatusBlock userProfile={userProfile} isOwner={isOwner} onEditMode={onEditMode} />
-            : <ProfileStatusForm onSubmit={onSave} initialValues={userProfile} userProfile={userProfile} Contacts={Contacts}/>}
+            //@ts-ignore
+            : <ProfileStatusForm onSubmit={onSave} initialValues={userProfile} userProfile={userProfile} Contacts={Contacts} />}
 
         </div>
       </div>
@@ -51,7 +69,13 @@ const ProfileInfo = ({ userProfile, authorizedUserId, status, putStatus, userId,
   )
 };
 
-const ProfileStatusBlock = ({ userProfile, isOwner, onEditMode }) => {
+type PropsProfileStatusBlockType = {
+  userProfile: UserProfileType
+  isOwner: boolean
+  onEditMode: () => void
+}
+
+const ProfileStatusBlock: FC<PropsProfileStatusBlockType> = ({ userProfile, isOwner, onEditMode }) => {
   return (
     <div>
       {isOwner && <button onClick={() => onEditMode()}>Edit</button>}
@@ -61,7 +85,8 @@ const ProfileStatusBlock = ({ userProfile, isOwner, onEditMode }) => {
       <p>About Me: {userProfile.aboutMe}</p>
       <div>
         <h4>Contacts</h4>
-        {Object.keys(userProfile.contacts).map((key => {
+        {Object.keys(userProfile.contacts).map(((key: string) => {
+          //@ts-ignore
           return <Contacts key={key} contactKey={key} contactValue={userProfile.contacts[key]} />
         }))}
       </div>
@@ -69,7 +94,12 @@ const ProfileStatusBlock = ({ userProfile, isOwner, onEditMode }) => {
   )
 }
 
-const Contacts = ({ contactKey, contactValue }) => {
+type PropsContactsType = {
+  contactKey: string
+  contactValue: string | null
+}
+const Contacts: FC<PropsContactsType> = ({ contactKey, contactValue }) => {
+  console.log(contactValue)
   return (
     <div>
       {contactKey} : {contactValue}

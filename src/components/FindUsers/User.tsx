@@ -1,9 +1,17 @@
 import classes from './FindUsers.module.css';
 import avatar from './../../assets/images/avatar-for-users.png';
 import { NavLink } from 'react-router-dom';
-import React from 'react';
+import React, { FC } from 'react';
+import { UsersType } from '../../types/types';
 
-const User = ({findUsers: {followedInProgress}, user, unfollowThunk, followThunk}) => {
+type PropsType = {
+  followedInProgress: number[]
+  user: UsersType
+  unfollowThunk: (userId: number) => void
+  followThunk: (userId: number) => void
+}
+
+const User: FC<PropsType> = ({followedInProgress, user, unfollowThunk, followThunk }) => {
   return (
     <div className={classes.userProfile}>
       <div>
@@ -12,10 +20,10 @@ const User = ({findUsers: {followedInProgress}, user, unfollowThunk, followThunk
         </NavLink>
         <div>
           {user.followed ?
-            <button disabled={followedInProgress.some(id => id === user.id)} onClick={() => {
+            <button disabled={followedInProgress.some((id: number) => id === user.id)} onClick={() => {
               unfollowThunk(user.id)
             }}>unfollow</button> :
-            <button disabled={followedInProgress.some(id => id === user.id)} onClick={() => {
+            <button disabled={followedInProgress.some((id: number) => id === user.id)} onClick={() => {
               followThunk(user.id)
             }}>follow</button>}
         </div>

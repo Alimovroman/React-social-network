@@ -78,7 +78,7 @@ export const setAuthUsersThunk = () => {
     }
   }
 };
-export const postLoginThunk = (email: string, password: number, rememberMe: boolean, captcha = null) => {
+export const postLoginThunk = (email: string, password: string, rememberMe: boolean, captcha?: string | null) => {
   return async (dispatch: any) => { // ЗАМЕНИТЬ НА ОБЫЧНУЮ АПДИСПАТЧ
     let response = await loginApi.postLogin(email, password, rememberMe, captcha);
     console.log(response.data.resultCode)

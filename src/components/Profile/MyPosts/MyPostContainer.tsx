@@ -1,9 +1,10 @@
 import { connect } from 'react-redux';
+import { RootState } from '../../../state/redux-store';
 import MyPosts from './MyPosts';
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: RootState) => {
   return {
-    profilePage: state.profilePage
+    postData: state.profilePage.postData
   }
 };
 

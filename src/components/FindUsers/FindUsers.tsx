@@ -17,7 +17,7 @@ const FindUsers: React.FC<PropsType> = ({ onSetPage, findUsers, unfollowThunk, f
     <div className={classes.findUsers}>
       <Paginator findUsers={findUsers} totalItemsCount={findUsers.totalUsersCount} onSetPage={onSetPage} />
       {findUsers.users.map((u: UsersType) =>
-        <User key={u.id} findUsers={findUsers} unfollowThunk={unfollowThunk} followThunk={followThunk} user={u} />
+        <User key={u.id} followedInProgress={findUsers.followedInProgress} unfollowThunk={unfollowThunk} followThunk={followThunk} user={u} />
       )}
     </div>
   )

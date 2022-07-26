@@ -1,15 +1,17 @@
+export type FriendsSideBarType = {
+  id: number,
+  name: string
+}
+
 type InitialStateType = {
-  friends: {
-    id: number,
-    name: string
-  }[]
+  friends: FriendsSideBarType[]
 }
 
 let initialState: InitialStateType = {
   friends: [
-    {id:1, name: 'Alexander'},
-    {id:2, name: 'Pusya'},
-    {id:3, name: 'Kolya'}
+    { id: 1, name: 'Alexander' },
+    { id: 2, name: 'Pusya' },
+    { id: 3, name: 'Kolya' }
   ]
 }
 

@@ -1,5 +1,6 @@
 import { stopSubmit } from "redux-form";
 import { profileApi } from "../api/api";
+import { PostDataType, UserProfileType } from "../types/types";
 
 const ADD_POST = 'PROFILE_REDUCER/ADD-POST';
 const DELETE_POST = 'PROFILE_REDUCER/DELETE_POST'
@@ -8,33 +9,7 @@ const SET_STATUS_PROFILE = 'PROFILE_REDUCER/SET_STATUS_PROFILE';
 const PUT_PHOTOS_PROFILE = 'PROFILE_REDUCER/PUT_PHOTOS_PROFILE';
 const PROFILE_SAVED = 'PROFILE_REDUCER/PROFILE_SAVED';
 
-type PostDataType = {
-  id: number,
-  message: string,
-  likeCount: string
-}
 
-type UserProfileType = {
-  aboutMe: string,
-  contacts: {
-    facebook: string 
-    website: string 
-    vk: string 
-    twitter: string 
-    instagram: string 
-    youtube: string 
-    github: string 
-    mainLink: string 
-  },
-  lookingForAJob: boolean,
-  lookingForAJobDescription?: string,
-  fullName: string,
-  userId: number,
-  photos: {
-    small: string | null,
-    large: string | null
-  },
-}
 
 type InitialStateType = {
   postData: PostDataType[],
@@ -131,13 +106,13 @@ export const putPhotoProfile = (photo: string): PutPhotoProfileActionType => ({ 
 export const profileSavedAC = (saved: string): profileSavedACType => ({ type: PROFILE_SAVED, saved })
 
 
-export const getProfileThunk = (userId: number) => {
+export const getProfileThunk = (userId: string) => {
   return async (dispatch: any) => {
     let response = await profileApi.getProfile(userId);
     dispatch(setUserProfile(response));
   }
 }
-export const getStatusThunk = (userId: number) => {
+export const getStatusThunk = (userId: string) => {
   return async (dispatch: any) => {
     let response = await profileApi.getStatus(userId);
     dispatch(getStatusProfile(response))

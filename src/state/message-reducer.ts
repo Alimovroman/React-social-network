@@ -1,14 +1,16 @@
 const ADD_MESSAGE = 'MESSAGES/ADD-MESSAGE';
 
+export type MessagesDataType = {
+  id: number,
+  message: string
+}
+export type DialogsDataType = {
+  id: number,
+  name: string
+}
 type InitialStateType = {
-  messagesData: {
-    id: number,
-    message: string
-  }[],
-  dialogsData: {
-    id: number,
-    name: string
-  }[]
+  messagesData: MessagesDataType[],
+  dialogsData: DialogsDataType[]
 }
 
 let initialState: InitialStateType = {

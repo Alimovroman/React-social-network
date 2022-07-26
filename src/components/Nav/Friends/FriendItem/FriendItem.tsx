@@ -1,11 +1,15 @@
 import classes from './../../Nav.module.css'
-import React from 'react';
+import React, { FC } from 'react';
 
-const FriendItem = (props) => {
+type PropsType = {
+  name: string
+}
+
+const FriendItem: FC<PropsType> = ({name}) => {
   return (
     <div className={classes.friendItem}>
       <img src='https://cs6.pikabu.ru/avatars/521/v521522.jpg?924365380' alt='avatar' className={classes.avatar}></img>
-      <div>{props.name}</div>
+      <div>{name}</div>
     </div>
   )
 }

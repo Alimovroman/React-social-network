@@ -1,11 +1,15 @@
 import classes from './MyPosts.module.css';
 import Post from './Post/Post';
 import WritePostContainer from './WritePost/WritePostContainer';
-import React from 'react';
+import React, { FC } from 'react';
+import { PostDataType } from '../../../types/types';
 
+type PropsType = {
+  postData : PostDataType[]
+}
 
-const MyPosts = (props) => {
-  let postElement = props.profilePage.postData.map(post => <Post key={post.id} message={post.message} likeCount={post.likeCount} />)
+const MyPosts: FC<PropsType> = ({postData}) => {
+  let postElement = postData.map((post: PostDataType) => <Post key={post.id} message={post.message} likeCount={post.likeCount} />)
   return (
     <div className={classes.postBlock}>
       <h2>my post</h2>
