@@ -1,17 +1,18 @@
 export type UsersType = {
   id: number
   name: string
-  uniqueUrlName: string | null
-  photos: {
-    small: string | null
-    large: string | null
-  }
+  photos: PhotosType
   status: string
   followed: boolean
 }
 
+export type PhotosType = {
+  small: string | null,
+  large: string | null
+}
+
 export type UserProfileType = {
-  aboutMe: string,
+  aboutMe?: string,
   contacts: {
     facebook: string 
     website: string 
@@ -26,10 +27,7 @@ export type UserProfileType = {
   lookingForAJobDescription?: string,
   fullName: string,
   userId: number,
-  photos: {
-    small: string | null,
-    large: string | null
-  },
+  photos: PhotosType
 }
 export type PostDataType = {
   id: number,

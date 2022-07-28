@@ -8,7 +8,7 @@ import Settings from './components/Settings/Settings';
 import FindUsersContainer from './components/FindUsers/FIndUsersContainer';
 // import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
-import Login from './components/Login/Login.jsx';
+import Login from './components/Login/Login';
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';

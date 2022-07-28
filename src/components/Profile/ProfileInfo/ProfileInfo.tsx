@@ -99,7 +99,6 @@ type PropsContactsType = {
   contactValue: string | null
 }
 const Contacts: FC<PropsContactsType> = ({ contactKey, contactValue }) => {
-  console.log(contactValue)
   return (
     <div>
       {contactKey} : {contactValue}

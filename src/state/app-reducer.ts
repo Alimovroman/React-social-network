@@ -1,4 +1,7 @@
+import { Dispatch } from "redux";
+import { ThunkAction } from "redux-thunk";
 import { setAuthUsersThunk } from "./auth-reducer";
+import { RootState } from "./redux-store";
 // import { AppDispatch } from "./redux-store";
 
 const initialization_Success = 'APP/initialization_Success';
@@ -14,7 +17,9 @@ type InitializationSuccessAction = {
   type: typeof initialization_Success
 }
 
-const appReducer = (state = initialState, action: any): InitialStateType => {
+type ActionType = InitializationSuccessAction
+
+const appReducer = (state = initialState, action: ActionType): InitialStateType => {
   switch(action.type) {
     case initialization_Success:
       return {
@@ -29,7 +34,7 @@ const appReducer = (state = initialState, action: any): InitialStateType => {
 
 const initializationSuccess = (): InitializationSuccessAction => ({type: initialization_Success});
 
-export const initializationAppThunk = () => (dispatch : any) => { // ЗАМЕНИТЬ НА ОБЫЧНУЮ АПДИСПАТЧ
+export const initializationAppThunk = (): ThunkAction<void, RootState, unknown, ActionType> => (dispatch) => { // ЗАМЕНИТЬ НА ОБЫЧНУЮ АПДИСПАТЧ
   let promise = dispatch(setAuthUsersThunk());
   Promise.all([promise]).then(() => dispatch(initializationSuccess() )) // Promise.all([передаем массив промисов]) и после того как все массивы зарезолвятся то выполниться наш диспатч
 };

@@ -1,5 +1,7 @@
 import { stopSubmit } from "redux-form";
-import { loginApi, securityApi } from "../api/api";
+import { ThunkAction } from "redux-thunk";
+import { loginApi, ResultCodeEnum, securityApi } from "../api/api";
+import { RootState } from "./redux-store";
 // import { AppDispatch } from "./redux-store";
 
 const SET_USER_DATA = 'auth/SET_USER_DATA';
@@ -25,7 +27,9 @@ export type InitialStateType = {
   captchaUrl: string | null
 }
 
-const authReducer = (state = initialState, action: any): InitialStateType => {
+type ActionType = SetAuthUserDataAction | LogoutAction | GetCaptchaUrlAction
+
+const authReducer = (state = initialState, action: ActionType): InitialStateType => {
   switch (action.type) {
     case SET_USER_DATA:
       return {
@@ -69,23 +73,25 @@ export const setAuthUserData = (id: number, login: string, email: string): SetAu
 const logout = (): LogoutAction => ({ type: LOGOUT });
 export const getCaptchaUrl = (captchaUrl: string): GetCaptchaUrlAction => ({ type: GET_CAPTCHA_URL, captchaUrl })
 
-export const setAuthUsersThunk = () => {
-  return async (dispatch: any) => {
+type ThunkType = ThunkAction<Promise<void>, RootState, unknown, ActionType>
+
+export const setAuthUsersThunk = (): ThunkType => {
+  return async (dispatch) => {
     let response = await loginApi.getLogin();
-    if (response.data.resultCode === 0) {
+    if (response.data.resultCode === ResultCodeEnum.Success) {
       let { id, login, email } = response.data.data
       dispatch(setAuthUserData(id, login, email))
     }
   }
 };
-export const postLoginThunk = (email: string, password: string, rememberMe: boolean, captcha?: string | null) => {
-  return async (dispatch: any) => { // ЗАМЕНИТЬ НА ОБЫЧНУЮ АПДИСПАТЧ
+export const postLoginThunk = (email: string, password: string, rememberMe: boolean, captcha?: string | null): ThunkType => {
+  return async (dispatch) => { // ЗАМЕНИТЬ НА ОБЫЧНУЮ АПДИСПАТЧ
     let response = await loginApi.postLogin(email, password, rememberMe, captcha);
     console.log(response.data.resultCode)
-    if (response.data.resultCode === 0) {
-      return dispatch(setAuthUsersThunk())
+    if (response.data.resultCode === ResultCodeEnum.Success) {
+       dispatch(setAuthUsersThunk())
     } else {
-      if (response.data.resultCode === 10) {
+      if (response.data.resultCode === ResultCodeEnum.Captcha) {
         dispatch(captchaUrlThunk())
       }
       let message = response.data.messages.length > 0 ? response.data.messages : 'Email Wrong';
@@ -93,15 +99,15 @@ export const postLoginThunk = (email: string, password: string, rememberMe: bool
     }
   }
 }
-export const captchaUrlThunk = () => async (dispatch: any) => {
+export const captchaUrlThunk = (): ThunkType => async (dispatch) => {
   let response = await securityApi.getCaptchaUrl();
   dispatch(getCaptchaUrl(response.data.url));
 };
 
-export const logoutThunk = () => {
-  return async (dispatch: any) => {
+export const logoutThunk = (): ThunkType => {
+  return async (dispatch) => {
     let response = await loginApi.logout();
-    if (response.data.resultCode === 0) {
+    if (response.data.resultCode === ResultCodeEnum.Success) {
       dispatch(logout())
     }
   }
