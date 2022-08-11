@@ -15,6 +15,7 @@ import { compose } from 'redux';
 import { initializationAppThunk } from './state/app-reducer';
 import Preloader from './components/common/Preloader/Preloader'
 import WithReactLazy from './components/HOC/WithReactLazy';
+import { RootState } from './state/redux-store';
 
 const SuperDialogContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
@@ -22,8 +23,10 @@ const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileCo
 const WithSuperDialogContainer = WithReactLazy(SuperDialogContainer);
 const WithProfileContainer = WithReactLazy(ProfileContainer)
 
-class App extends React.Component {
-  catchAllUnhandleErrors = (PromiseRejectEvent) => {
+type PropsType = MapStateToPropsType & MapDispatchToPropsType
+//catchAllUnhandleErrors = (PromiseRejectEvent) => { Удалили ПромисРеджектЕвент
+class App extends React.Component<PropsType> {
+  catchAllUnhandleErrors = (e: PromiseRejectionEvent) => {
     console.log(`Some Error Occured`)
   }
   componentDidMount() {
@@ -59,10 +62,16 @@ class App extends React.Component {
   }
 };
 
-let mapStateToProps = (state) => {
+type MapStateToPropsType = {
+  initialization: boolean
+}
+let mapStateToProps = (state: RootState): MapStateToPropsType => {
   return {
     initialization: state.app.initialization
   }
 }
-//export default App;
-export default compose(connect(mapStateToProps, { initializationAppThunk }))(App);
+type MapDispatchToPropsType = {
+  initializationAppThunk: () => void
+}
+
+export default compose<React.ComponentType>(connect(mapStateToProps, { initializationAppThunk }))(App);

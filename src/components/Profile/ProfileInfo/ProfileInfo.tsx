@@ -2,9 +2,12 @@ import Preloader from '../../common/Preloader/Preloader';
 import classes from './ProfileInfo.module.css';
 import ProfileStatus from './ProfileStatus/ProfileStatus';
 import avatar from '../../../assets/images/avatar-for-users.png';
-import React, { FC, useState } from 'react';
+import React, { ChangeEvent, FC, ReactNode, useState } from 'react';
 import ProfileStatusForm from './ProfileStatusForm/ProfileStatusForm';
-import { UserProfileType } from '../../../types/types';
+import { ContactsType, UserProfileType } from '../../../types/types';
+import { JsxElement } from 'typescript';
+import { WrappedFieldProps } from 'redux-form';
+import { ValidatorsValueTypes } from '../../../utils/validator';
 
 type ResponseType = {
   saved: string
@@ -17,8 +20,12 @@ type PropsType = {
   userId: string
   isOwner: boolean
   putStatus: (status: string) => void
-  savePhoto: (photo: string) => void
-  saveProfileInfo: (userProfile: UserProfileType) => void
+  savePhoto: (photo: File) => void
+  saveProfileInfo: (userProfile: UserProfileType) => Promise<any>
+}
+
+export type FormDataProfileStatusType = {
+  userProfile: UserProfileType
 }
 
 const ProfileInfo: FC<PropsType> = ({ userProfile, authorizedUserId, status, putStatus, userId, isOwner, savePhoto, saveProfileInfo }) => {
@@ -26,8 +33,8 @@ const ProfileInfo: FC<PropsType> = ({ userProfile, authorizedUserId, status, put
   if (userProfile == null || undefined) {
     return <Preloader />
   }
-  let onAddAvatarOnServer = (e: any) => {
-    if (e.target.files.length) {
+  let onAddAvatarOnServer = (e: ChangeEvent<HTMLInputElement>) => { // Убрать Any ChangeEvent<HTMLInputElement> не работает с ?
+    if (e.target.files && e.target.files.length) {
       savePhoto(e.target.files[0]);
     }
   }
@@ -35,9 +42,10 @@ const ProfileInfo: FC<PropsType> = ({ userProfile, authorizedUserId, status, put
     setEditMode(true)
   }
 
-  let onSave = (formData: any) => {
-    //@ts-ignore
+  let onSave = (formData: UserProfileType) => {
+    //todo remove then
     saveProfileInfo(formData).then((response: ResponseType) => {
+      
       if (response.saved === `saved`) {
         setEditMode(false)
       } else {
@@ -60,8 +68,8 @@ const ProfileInfo: FC<PropsType> = ({ userProfile, authorizedUserId, status, put
           <ProfileStatus authorizedUserId={authorizedUserId} status={status} putStatus={putStatus} userId={userId} />
           {!editMode
             ? <ProfileStatusBlock userProfile={userProfile} isOwner={isOwner} onEditMode={onEditMode} />
-            //@ts-ignore
-            : <ProfileStatusForm onSubmit={onSave} initialValues={userProfile} userProfile={userProfile} Contacts={Contacts} />}
+
+            : <ProfileStatusForm onSubmit={onSave} userProfile={userProfile}  />}
 
         </div>
       </div>
@@ -85,10 +93,12 @@ const ProfileStatusBlock: FC<PropsProfileStatusBlockType> = ({ userProfile, isOw
       <p>About Me: {userProfile.aboutMe}</p>
       <div>
         <h4>Contacts</h4>
-        {Object.keys(userProfile.contacts).map(((key: string) => {
-          //@ts-ignore
-          return <Contacts key={key} contactKey={key} contactValue={userProfile.contacts[key]} />
-        }))}
+        {Object
+          .keys(userProfile.contacts)
+          .map(((key: string) => {
+
+            return <Contacts key={key} contactKey={key} contactValue={userProfile.contacts[key as  keyof ContactsType]} />
+          }))}
       </div>
     </div>
   )
@@ -96,7 +106,7 @@ const ProfileStatusBlock: FC<PropsProfileStatusBlockType> = ({ userProfile, isOw
 
 type PropsContactsType = {
   contactKey: string
-  contactValue: string | null
+  contactValue: string
 }
 const Contacts: FC<PropsContactsType> = ({ contactKey, contactValue }) => {
   return (

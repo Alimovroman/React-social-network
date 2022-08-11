@@ -3,19 +3,17 @@ export type FriendsSideBarType = {
   name: string
 }
 
-type InitialStateType = {
-  friends: FriendsSideBarType[]
-}
+type InitialStateType = typeof initialState
 
-let initialState: InitialStateType = {
+let initialState = {
   friends: [
     { id: 1, name: 'Alexander' },
     { id: 2, name: 'Pusya' },
     { id: 3, name: 'Kolya' }
-  ]
+  ] as FriendsSideBarType[]
 }
 
-const sideBarReducer = (state = initialState, action: any): InitialStateType => {
+const sideBarReducer = (state = initialState): InitialStateType => {
 
   return state
 };

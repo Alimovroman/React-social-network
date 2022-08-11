@@ -10,8 +10,8 @@ type PropsType = {
   userId: string
   isOwner: boolean
   putStatusThunk: (status: string) => void
-  savePhoto: (photo: string) => void
-  saveProfileInfo: (userProfile: UserProfileType) => void
+  savePhoto: (photo: File) => void
+  saveProfileInfo: (userProfile: UserProfileType) => Promise<any>
 }
 
 const Profile: FC<PropsType> = ({ authorizedUserId, userProfile, status, putStatusThunk, userId, isOwner, savePhoto, saveProfileInfo }) => {

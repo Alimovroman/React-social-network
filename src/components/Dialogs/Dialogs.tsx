@@ -2,7 +2,7 @@ import classes from './Dialogs.module.css';
 import DialogsUser from './DialogsUser/DialogsUser';
 import Messages from './Messages/Messages';
 import React, { FC } from 'react';
-import { Field } from 'redux-form';
+import { Field, InjectedFormProps } from 'redux-form';
 import { reduxForm } from 'redux-form';
 import { Textarea } from '../common/Preloader/FormControl';
 import { maxLengthCreator, required } from '../../utils/validator';
@@ -10,7 +10,7 @@ import { DialogsDataType, MessagesDataType } from '../../state/message-reducer';
 
 const maxLength50 = maxLengthCreator(50);
 
-let NewMessage = (props: any) => {
+let NewMessageForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
   return (
     <form onSubmit={props.handleSubmit}>
       <div>
@@ -22,20 +22,24 @@ let NewMessage = (props: any) => {
     </form>
   )
 };
-//@ts-ignore
-NewMessage = reduxForm({form: `newMessage`})(NewMessage)
+
+const NewMessageReduxForm = reduxForm<FormDataType>({form: `newMessage`})(NewMessageForm)
 
 type PropsType = {
   messages: MessagesDataType[]
   dialogs: DialogsDataType[]
-  addMessage: (newMessage: string) => void
+  addMessage: (message: string) => void
 }
 
-const Dialogs: FC<PropsType> = ({messages, dialogs}) => {
+type FormDataType = {
+  newMessage: string
+}
+
+const Dialogs: FC<PropsType> = ({messages, dialogs, addMessage}) => {
   let dialogItem = dialogs.map(dialog => <DialogsUser key={dialog.id} name={dialog.name} id={dialog.id} />);
   let messageItem = messages.map(message => <Messages key={message.id} message={message.message} />)
 
-  const addMessage = (formData: any) => {
+  const addMessageForm = (formData: FormDataType) => {
     addMessage(formData.newMessage)
     formData.newMessage = '';
   };
@@ -48,7 +52,7 @@ const Dialogs: FC<PropsType> = ({messages, dialogs}) => {
       <div className={classes.messages}>
         {messageItem}
         <div>
-          <NewMessage onSubmit={addMessage}/>
+          <NewMessageReduxForm onSubmit={addMessageForm}/>
         </div>
       </div>
     </div>

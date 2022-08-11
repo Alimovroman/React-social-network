@@ -1,5 +1,5 @@
 import { UserProfileType } from './../types/types';
-import { followed } from './../state/findUsers-reducer';
+//import { followed } from './../state/findUsers-reducer';
 import axios from "axios";
 import { PhotosType } from "../types/types";
 
@@ -114,7 +114,7 @@ type PutPhotoType = {
 type ProfileInfoType = {
   resultCode: ResultCodeEnum
   messages: string[],
-  data: any
+  data: object
 }
 
 export const profileApi = {

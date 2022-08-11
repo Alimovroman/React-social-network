@@ -1,16 +1,22 @@
 import { connect } from 'react-redux';
-import { addMessage } from '../../state/message-reducer';
+import { actionsMessage, DialogsDataType, MessagesDataType } from '../../state/message-reducer';
 import Dialogs from './Dialogs';
 import withAuthRedirect from '../HOC/WithAuthRedirect';
 import { compose } from 'redux';
 import { RootState } from '../../state/redux-store';
+import React from 'react';
 
-let mapStateToProps = (state: RootState) => {
+type MapStateToPropsType = {
+  messages: MessagesDataType[]
+  dialogs: DialogsDataType[]
+}
+
+let mapStateToProps = (state: RootState): MapStateToPropsType => {
   return {
     messages: state.messagesPage.messagesData,
     dialogs: state.messagesPage.dialogsData
   }
 };
 
-export default compose(connect(mapStateToProps, { addMessage }),
+export default compose<React.ComponentType>(connect(mapStateToProps, { addMessage: actionsMessage.addMessage }),
   withAuthRedirect)(Dialogs)

@@ -1,7 +1,7 @@
 import Preloader from "../common/Preloader/Preloader";
 import React, { Suspense } from "react";
 
-const WithReactLazy = (ReactLazy) => {
+const WithReactLazy = (ReactLazy: React.ComponentType) => {
   return class extends React.Component {
     
     render() {

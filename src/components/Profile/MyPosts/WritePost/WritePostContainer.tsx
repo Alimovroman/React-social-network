@@ -1,7 +1,8 @@
-import { addPostActionCreator } from '../../../../state/profile-reducer';
+import { actionsProfile } from '../../../../state/profile-reducer';
 import WritePost from './WritePost';
 import { connect } from 'react-redux';
-import { RootState } from '../../../../state/redux-store';
+import { AppDispatch, RootState } from '../../../../state/redux-store';
+import { Dispatch } from 'redux';
 
 let mapStateToProps = (state: RootState) => {
   // return {
@@ -9,9 +10,9 @@ let mapStateToProps = (state: RootState) => {
   // }
 };
 
-let mapDispatchToProps = (dispatch: any) => {
+let mapDispatchToProps = (dispatch: AppDispatch) => {
   return {
-    addPost: (text: string) => dispatch(addPostActionCreator(text)),
+    addPost: (text: string) => dispatch(actionsProfile.addPostActionCreator(text)),
   }
 }
 

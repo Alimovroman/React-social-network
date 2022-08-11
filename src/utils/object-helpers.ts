@@ -1,7 +1,7 @@
-export const followUnfollowReducer = (state, action, boolean) => {
+export const followUnfollowReducer = (state: any, action: any, boolean: any) => {
   return {
     ...state,
-    users: state.users.map(u => {
+    users: state.users.map((u: any) => {
       if (u.id === action.userId) {
         return { ...u, followed: boolean }
       }

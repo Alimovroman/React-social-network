@@ -8,17 +8,7 @@ import { compose } from "redux"
 import { RootState } from "../../state/redux-store"
 import { UserProfileType } from "../../types/types"
 
-type PropsType = {
-  userProfile: UserProfileType
-  status: string
-  authorizedUserId: number
-
-  getProfileThunk: (userId: string) => void
-  getStatusThunk: (userId: string) => void
-  putStatusThunk: (status: string) => void
-  savePhoto: (photo: string) => void
-  saveProfileInfo: (userProfile: UserProfileType) => void
-}
+type PropsType = MapStateToPropsType & MapDispatchToPropsType
 
 const ProfileContainer: FC<PropsType> = ({ userProfile, authorizedUserId, status, getProfileThunk, getStatusThunk,
   putStatusThunk, savePhoto, saveProfileInfo }) => {
@@ -34,18 +24,31 @@ const ProfileContainer: FC<PropsType> = ({ userProfile, authorizedUserId, status
   }, [userId])
 
   return (
-    <Profile userProfile={userProfile}
+    <Profile userProfile={userProfile!}
       putStatusThunk={putStatusThunk} userId={userId} isOwner={Number(userId) === authorizedUserId}
-      savePhoto={savePhoto} saveProfileInfo={saveProfileInfo} status={status} authorizedUserId={authorizedUserId} />
+      savePhoto={savePhoto} saveProfileInfo={saveProfileInfo} status={status} authorizedUserId={authorizedUserId!} />
   )
 }
 
-const mapStateToProps = (state: RootState) => ({
+type MapStateToPropsType = {
+  userProfile: UserProfileType | null
+  status: string
+  authorizedUserId: number | null
+}
+type MapDispatchToPropsType = {
+  getProfileThunk: (userId: string) => void
+  getStatusThunk: (userId: string) => void
+  putStatusThunk: (status: string) => void
+  savePhoto: (photo: File) => void
+  saveProfileInfo: (userProfile: UserProfileType) => Promise<any>
+}
+
+const mapStateToProps = (state: RootState): MapStateToPropsType => ({
   userProfile: state.profilePage.userProfile,
   status: state.profilePage.status,
   authorizedUserId: state.auth.id,
   //isAuth: state.auth.isAuth,
 });
 
-export default compose(connect(mapStateToProps, { getProfileThunk, getStatusThunk, putStatusThunk, savePhoto, saveProfileInfo }),
+export default compose<React.ComponentType>(connect(mapStateToProps, { getProfileThunk, getStatusThunk, putStatusThunk, savePhoto, saveProfileInfo }),
   withAuthRedirect)(ProfileContainer);

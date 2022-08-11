@@ -1,27 +1,19 @@
 import { Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 import { setAuthUsersThunk } from "./auth-reducer";
-import { RootState } from "./redux-store";
-// import { AppDispatch } from "./redux-store";
+import { InferActionsType, RootState } from "./redux-store";
 
-const initialization_Success = 'APP/initialization_Success';
+type InitialStateType = typeof initialState
 
-type InitialStateType = {
-  initialization: boolean
-}
-let initialState: InitialStateType = {
+let initialState = {
   initialization: false
 }
 
-type InitializationSuccessAction = {
-  type: typeof initialization_Success
-}
-
-type ActionType = InitializationSuccessAction
+type ActionType = InferActionsType<typeof actionsApp>
 
 const appReducer = (state = initialState, action: ActionType): InitialStateType => {
   switch(action.type) {
-    case initialization_Success:
+    case "APP/INITIALIZATION_SUCCESS":
       return {
         ...state,
         initialization: true
@@ -32,14 +24,14 @@ const appReducer = (state = initialState, action: ActionType): InitialStateType 
   }
 };
 
-const initializationSuccess = (): InitializationSuccessAction => ({type: initialization_Success});
+export const actionsApp = {
+  initializationSuccess : () => ({type: 'APP/INITIALIZATION_SUCCESS'} as const)
+}
+
 
 export const initializationAppThunk = (): ThunkAction<void, RootState, unknown, ActionType> => (dispatch) => { // ЗАМЕНИТЬ НА ОБЫЧНУЮ АПДИСПАТЧ
   let promise = dispatch(setAuthUsersThunk());
-  Promise.all([promise]).then(() => dispatch(initializationSuccess() )) // Promise.all([передаем массив промисов]) и после того как все массивы зарезолвятся то выполниться наш диспатч
+  Promise.all([promise]).then(() => dispatch(actionsApp.initializationSuccess() )) // Promise.all([передаем массив промисов]) и после того как все массивы зарезолвятся то выполниться наш диспатч
 };
 
 export default appReducer;
-
-// (alias) setAuthUsersThunk(): (dispatch: Dispatch<Action<any>>) => Promise<void>
-//(alias) setAuthUsersThunk(): (dispatch: Dispatch<Action<any>>) => Promise<void>
