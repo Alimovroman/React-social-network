@@ -14,6 +14,10 @@ let initialState = {
   currentPage: 1,
   isFetching: false,
   followedInProgress: [] as number[],
+  filter: {
+    term: '',
+    friend: null as null | boolean
+  }
 };
 
 
@@ -45,6 +49,12 @@ const findUserReducer = (state = initialState, action: ActionType): InitialState
           ? [...state.followedInProgress, action.id]
           : state.followedInProgress.filter((a: number) => a !== action.id)
       }
+    case 'FIND-USER/SEARCH_USERS':
+      return {
+        ...state,
+        filter: action.payload
+      }
+
 
     default:
       return state
@@ -54,33 +64,36 @@ const findUserReducer = (state = initialState, action: ActionType): InitialState
 type ActionType = InferActionsType<typeof actionsFindUsers>
 
 export const actionsFindUsers = {
-followed : (userId: number) => ({ type: 'FIND-USER/FOLLOW', userId } as const),
-unfollowed : (userId: number) => ({ type: 'FIND-USER/UNFOLLOW', userId } as const),
-setUsers : (users: UsersType[]) => ({ type: 'FIND-USER/SET_USERS', users } as const),
-setCurrentPage : (currentPage: number) => ({ type: 'FIND-USER/SET_CURRENT_PAGE', currentPage } as const),
-setTotalUserCount : (totalUsersCount: number) => ({ type: 'FIND-USER/SET_TOTAL_USER_COUNT', totalUsersCount: totalUsersCount } as const),
-toggleIsFetching : (isFetching: boolean) => ({ type: 'FIND-USER/TOGGLE_IS_FETCHING', isFetching: isFetching } as const),
-toggleIsFollowedInProgress : (id: number, isFetching: boolean) => ({ type: 'FIND-USER/TOGGLE_IS_FOLLOWED_IN_PROGRESS', id, isFetching } as  const),
-
+  followed: (userId: number) => ({ type: 'FIND-USER/FOLLOW', userId } as const),
+  unfollowed: (userId: number) => ({ type: 'FIND-USER/UNFOLLOW', userId } as const),
+  setUsers: (users: UsersType[]) => ({ type: 'FIND-USER/SET_USERS', users } as const),
+  setCurrentPage: (currentPage: number) => ({ type: 'FIND-USER/SET_CURRENT_PAGE', currentPage } as const),
+  setTotalUserCount: (totalUsersCount: number) => ({ type: 'FIND-USER/SET_TOTAL_USER_COUNT', totalUsersCount: totalUsersCount } as const),
+  toggleIsFetching: (isFetching: boolean) => ({ type: 'FIND-USER/TOGGLE_IS_FETCHING', isFetching: isFetching } as const),
+  toggleIsFollowedInProgress: (id: number, isFetching: boolean) => ({ type: 'FIND-USER/TOGGLE_IS_FOLLOWED_IN_PROGRESS', id, isFetching } as const),
+  searchUsers: (filter: FilterUsers) => ({type: 'FIND-USER/SEARCH_USERS', payload: filter } as const)
 }
 
 type ThunkCreatorType = ThunkAction<Promise<void>, RootState, unknown, ActionType>
 
-export const getUsersThunkCreator = (currentPage: number, pageSize: number): ThunkCreatorType => {
+export const getUsersThunkCreator = (currentPage: number, pageSize: number, filter: FilterUsers): ThunkCreatorType => {
   return async (dispatch) => {
     dispatch(actionsFindUsers.toggleIsFetching(true));
     dispatch(actionsFindUsers.setCurrentPage(currentPage)) // Эта строка не требуется в ComponentDidMount
-    let response = await userApi.getUsers(currentPage, pageSize);
+    dispatch(actionsFindUsers.searchUsers(filter))
+
+    let response = await userApi.getUsers(currentPage, pageSize, filter.term, filter.friend);
     dispatch(actionsFindUsers.toggleIsFetching(false));
     dispatch(actionsFindUsers.setUsers(response.items));
     dispatch(actionsFindUsers.setTotalUserCount(response.totalCount));
+    
   };
 }
 
 const _followUnfollowFlow = async (userId: number,
-                                    apiMethod: any,
-                                    action: (userId: number) =>  ActionType,
-                                    dispatch: Dispatch<ActionType>) => {
+  apiMethod: any,
+  action: (userId: number) => ActionType,
+  dispatch: Dispatch<ActionType>) => {
   dispatch(actionsFindUsers.toggleIsFollowedInProgress(userId, true));
   let response = await apiMethod(userId);
   if (response.data.resultCode === ResultCodeEnum.Success) {
@@ -91,14 +104,15 @@ const _followUnfollowFlow = async (userId: number,
 
 export const unfollowThunkCreator = (userId: number): ThunkCreatorType => {
   return async (dispatch) => {
-    _followUnfollowFlow(userId, userApi.deleteFollowed, actionsFindUsers.unfollowed, dispatch);
+    await _followUnfollowFlow(userId, userApi.deleteFollowed, actionsFindUsers.unfollowed, dispatch);
   }
 }
 
 export const followThunkCreator = (userId: number): ThunkCreatorType => {
   return async (dispatch) => {
-    _followUnfollowFlow(userId, userApi.postFollowed, actionsFindUsers.followed, dispatch)
+    await _followUnfollowFlow(userId, userApi.postFollowed, actionsFindUsers.followed, dispatch)
   }
 }
 
+export type FilterUsers = typeof initialState.filter
 export default findUserReducer;

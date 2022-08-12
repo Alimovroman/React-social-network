@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { followThunkCreator, getUsersThunkCreator, InitialStateTypeForFindUsers, unfollowThunkCreator } from "../../state/findUsers-reducer";
+import { FilterUsers, followThunkCreator, getUsersThunkCreator, InitialStateTypeForFindUsers, unfollowThunkCreator } from "../../state/findUsers-reducer";
 import React from 'react';
 import FindUsers from './FindUsers';
 import Preloader from "../common/Preloader/Preloader";
@@ -9,20 +9,25 @@ import { RootState } from "../../state/redux-store";
 
 type PropsType = {
   findUsers: InitialStateTypeForFindUsers
-  getUsersThunk: (currentPage: number, pageSize: number) => void
+  getUsersThunk: (currentPage: number, pageSize: number, filter: FilterUsers ) => void
   unfollowThunk: (id: number) => void
   followThunk: (id: number) => void
 }
 
 class FindUsersPageContainer extends React.Component<PropsType> {
   componentDidMount() {
-    let {currentPage, pageSize} = this.props.findUsers
-    this.props.getUsersThunk(currentPage, pageSize)
+    let {currentPage, pageSize, filter} = this.props.findUsers
+    this.props.getUsersThunk(currentPage, pageSize, filter)
   }
 
   onSetPage = (pageNumber: number) => {
-    const {pageSize} = this.props.findUsers
-    this.props.getUsersThunk(pageNumber, pageSize)
+    const {pageSize, filter} = this.props.findUsers
+    this.props.getUsersThunk(pageNumber, pageSize, filter)
+  }
+
+  onSearchUsers = (filter: FilterUsers) => {
+    let {currentPage, pageSize} = this.props.findUsers
+    this.props.getUsersThunk(1, pageSize, filter)
   }
 
   render() {
@@ -30,7 +35,7 @@ class FindUsersPageContainer extends React.Component<PropsType> {
       <>
         {this.props.findUsers.isFetching ? <Preloader /> : null}
         <FindUsers onSetPage={this.onSetPage} findUsers={this.props.findUsers}
-          unfollowThunk={this.props.unfollowThunk} followThunk={this.props.followThunk} />
+          unfollowThunk={this.props.unfollowThunk} followThunk={this.props.followThunk} onSearchUsers={this.onSearchUsers}/>
       </>
     )
   }

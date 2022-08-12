@@ -70,21 +70,21 @@ type GetUsersType = {
   error: string
 }
 
-type FollowPost = {
+export type FollowPost = {
   resultCode: ResultCodeEnum
   messages: string[],
   data: object
 }
 
-type FollowDelete = {
+export type FollowDelete = {
   resultCode: ResultCodeEnum
   messages: string[],
   data: object
 }
 export const userApi = {
-  getUsers: (currentPage: number, pageSize: number) => {
+  getUsers: (currentPage: number, pageSize: number, term: string, friend: null | boolean = null) => {
     return (
-      instance.get<GetUsersType>(`users?page=${currentPage}&count=${pageSize}`)
+      instance.get<GetUsersType>(`users?page=${currentPage}&count=${pageSize}&term=${term}${friend === null ? '' : `&friend=${friend}`}`)
     ).then(response => {
       return response.data
     })
