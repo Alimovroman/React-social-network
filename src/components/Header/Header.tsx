@@ -31,11 +31,9 @@ const Header: FC = () => {
           <Menu.Item key={'1'}><Link to='/developers'>Developers</Link></Menu.Item>
         </Menu>
       </Col>
-      
            {isAuth
            ? <>
             <Col span='1'><Avatar style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} /></Col>
-            
             {/* {login}  */}
             <Col span='5'><Button onClick={onLogout}>Log out</Button></Col>
            </>
