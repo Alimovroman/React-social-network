@@ -1,7 +1,11 @@
 import React, { FC } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { connect } from "react-redux";
 import { Navigate } from "react-router-dom";
+import { Action } from "redux";
 import { InjectedFormProps, reduxForm } from "redux-form";
+import { ThunkDispatch } from "redux-thunk";
 import { postLoginThunk } from "../../state/auth-reducer";
 import { RootState } from "../../state/redux-store";
 import { required } from "../../utils/validator";
@@ -32,26 +36,18 @@ let LoginForm: FC<InjectedFormProps<FormaDAtaType, PropsLoginFormType> & PropsLo
 
 const LoginReduxForm = reduxForm<FormaDAtaType, PropsLoginFormType>({ form: 'login' })(LoginForm)
 
-type MapStateToPropsType = {
-  isAuth: boolean
-  captchaUrl: string | null
-}
-
-type MapDispatchToPropsType = {
-  postLoginThunk: (email: string, password: string, rememberMe: boolean, captcha: string | null)  => void
-}
-
-type PropsType = MapStateToPropsType & MapDispatchToPropsType
-
 type FormaDAtaType = {
   email: string
   password: string
   checkbox: boolean
   captcha: string | null
 }
-const Login: FC<PropsType> = ({postLoginThunk, isAuth, captchaUrl}) => {
+const Login: FC = () => {
+  const {isAuth, captchaUrl} = useSelector((state: RootState) => state.auth)
+  const dispatch = useDispatch<ThunkDispatch <RootState, void, Action> >()
+
   const onSubmit = (formData: FormaDAtaType) => {
-    postLoginThunk(formData.email, formData.password, formData.checkbox, formData.captcha)
+    dispatch(postLoginThunk(formData.email, formData.password, formData.checkbox, formData.captcha))
   }
   if (isAuth) {
     return <Navigate to={'/profile'} />
@@ -64,10 +60,5 @@ const Login: FC<PropsType> = ({postLoginThunk, isAuth, captchaUrl}) => {
   )
 };
 
-let mapStateToProps = (state: RootState): MapStateToPropsType => ({
-  isAuth: state.auth.isAuth,
-  captchaUrl: state.auth.captchaUrl
-});
 
-
-export default connect(mapStateToProps, { postLoginThunk })(Login);
+export default Login;

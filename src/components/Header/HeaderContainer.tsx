@@ -1,5 +1,7 @@
 import React from "react";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
+import { Action } from "redux";
+import { ThunkDispatch } from "redux-thunk";
 import { logoutThunk } from "../../state/auth-reducer";
 import { RootState } from "../../state/redux-store";
 import Header from "./Header";
@@ -10,26 +12,15 @@ type PropsType = {
   logoutThunk: () => void
 }
 
-class HeaderContainer extends React.Component<PropsType> {
-  constructor(props: PropsType) {
-    super(props);
-    this.onLogout = this.onLogout.bind(this)
+const HeaderContainer = () => {
+  const dispatch = useDispatch<ThunkDispatch<RootState, void, Action>>()
+
+  const onLogout = () => {
+    dispatch(logoutThunk())
   }
-  onLogout() {
-    this.props.logoutThunk()
-  }
-  render() {
     return (
-      <Header isAuth={this.props.isAuth} login={this.props.login} onLogout={this.onLogout}/>
+      <Header />
     )
-  }
 };
 
-const mapStateToProps = (state: RootState) => {
-  return {
-    login: state.auth.login,
-    isAuth: state.auth.isAuth
-  }
-};
-
-export default connect(mapStateToProps, { logoutThunk })(HeaderContainer);
+export default HeaderContainer;
