@@ -1,13 +1,9 @@
 import './App.css';
-import Nav from './components/Nav/Nav';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Music from './components/Music/Music';
 import News from './components/News/News';
 import Settings from './components/Settings/Settings';
-// import SuperDialogContainer from './components/Dialogs/DialogsContainer';
 import FindUsersContainer from './components/FindUsers/FIndUsersContainer';
-// import ProfileContainer from './components/Profile/ProfileContainer';
-import HeaderContainer from './components/Header/HeaderContainer';
 import Login from './components/Login/Login';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -20,9 +16,8 @@ import 'antd/dist/antd.css';
 import './index.css';
 
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Breadcrumb, Col, Layout, Menu, Row } from 'antd';
+import { Breadcrumb, Layout, Menu, Row } from 'antd';
 import SubMenu from 'antd/lib/menu/SubMenu';
-import { NavLink } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Header from './components/Header/Header';
 
@@ -33,12 +28,14 @@ const { Content, Footer, Sider } = Layout;
 
 const SuperDialogContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
+const ChatPageContainer = React.lazy(() => import('./components/Pages/Chat/ChatPage'))
 
 const WithSuperDialogContainer = WithReactLazy(SuperDialogContainer);
 const WithProfileContainer = WithReactLazy(ProfileContainer)
+const WithChatPageContainer = WithReactLazy(ChatPageContainer)
 
 type PropsType = MapStateToPropsType & MapDispatchToPropsType
-//catchAllUnhandleErrors = (PromiseRejectEvent) => { Удалили ПромисРеджектЕвент
+
 class App extends React.Component<PropsType> {
   catchAllUnhandleErrors = (e: PromiseRejectionEvent) => {
     console.log(`Some Error Occured`)
@@ -78,6 +75,9 @@ class App extends React.Component<PropsType> {
                 <SubMenu key={`sub2`} icon={<LaptopOutlined />} title={`Developers`}>
                   <Menu.Item key={`3`}> <Link to='/developers' >Find users</Link></Menu.Item>
                 </SubMenu>
+                <SubMenu key={`sub3`} icon={<NotificationOutlined />} title={`sub nuv 3`}>
+                  <Menu.Item key={`4`}><Link to='/chat'>Chat</Link></Menu.Item>
+                </SubMenu>
               </Menu>
 
             </Sider>
@@ -91,6 +91,7 @@ class App extends React.Component<PropsType> {
                 <Route path='/music' element={<Music />} />
                 <Route path='/settings' element={<Settings />} />
                 <Route path='/developers' element={<FindUsersContainer />} />
+                <Route path='/chat' element={<WithChatPageContainer/>} />
                 <Route path='/auth' element={<Login />} />
                 <Route path='*' element={<h2>404</h2>} />
               </Routes>

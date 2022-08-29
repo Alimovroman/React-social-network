@@ -11,10 +11,6 @@ import { ThunkDispatch } from 'redux-thunk';
 import { Action } from 'redux';
 import { logoutThunk } from '../../state/auth-reducer';
 
-// type PropsType = {
-//   onLogout: () => void
-// }
-
 const Header: FC = () => {
   const {isAuth, login} = useSelector((state: RootState) => state.auth)
   const { Header } = Layout;
@@ -27,7 +23,7 @@ const Header: FC = () => {
     <Header className="header">
     <Row>
       <Col span='18'>
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
+        <Menu theme="dark" mode="horizontal">
           <Menu.Item key={'1'}><Link to='/developers'>Developers</Link></Menu.Item>
         </Menu>
       </Col>
